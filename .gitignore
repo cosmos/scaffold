@@ -1,0 +1,8 @@
+# For testing the generator
+test
+
+# For the built static files that must be generated
+cmd/bindata.go
+
+# For binaries created with make build
+build
