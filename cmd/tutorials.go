@@ -34,7 +34,7 @@ type userRepoArgs struct {
 // tutCmd represents the tutorial generator, either nameservice or hellochain can be created
 var tutCmd = &cobra.Command{
 	Use:   "tutorial [nameservice or hellochain] [user] [repo]",
-	Short: "Generates the a tutorial app, either the nameservice or hellochain ones",
+	Short: "Generates one of the tutorial apps, currently either the 'nameservice' or 'hellochain'",
 	Args:  cobra.ExactArgs(3),
 	Run: func(cmd *cobra.Command, args []string) {
 		ns := userRepoArgs{args[1], args[2]}
