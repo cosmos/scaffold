@@ -6,6 +6,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/{{ .User }}/{{ .Repo }}/x/{{ .ModuleName }}/internal/types"
 )
+// TODO: Define if your module needs Parameters, if not this can be deleted
 
 // GetParams returns the total set of {{ .ModuleName }} parameters.
 func (k Keeper) GetParams(ctx sdk.Context) (params types.Params) {
