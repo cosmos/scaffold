@@ -38,7 +38,7 @@ var nsCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(2),
 	Run: func(cmd *cobra.Command, args []string) {
 		ns := userRepoArgs{args[0], args[1]}
-		err := scaffoldTutorial("nameservice", outputPath, ns)
+		err := scaffold("nameservice", outputPath, ns)
 		if err != nil {
 			fmt.Println(err)
 			return
@@ -53,7 +53,7 @@ var hcCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(2),
 	Run: func(cmd *cobra.Command, args []string) {
 		ns := userRepoArgs{args[0], args[1]}
-		err := scaffoldTutorial("hellochain", outputPath, ns)
+		err := scaffold("hellochain", outputPath, ns)
 		if err != nil {
 			fmt.Println(err)
 			return
@@ -63,7 +63,7 @@ var hcCmd = &cobra.Command{
 
 // Give this the name of the tutorial and any arguements necessary for
 // said tutorial
-func scaffoldTutorial(name string, op string, args interface{}) error {
+func scaffold(name string, op string, args interface{}) error {
 	// Fetch the scaffold files for the tutorial
 	files := tutorialFiles(name)
 
