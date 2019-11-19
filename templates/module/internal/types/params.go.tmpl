@@ -20,12 +20,12 @@ var (
 	// KeyParamName          = []byte("ParamName")
 )
 
-// ParamKeyTable for slashing module
+// ParamKeyTable for {{ .ModuleName }} module
 func ParamKeyTable() params.KeyTable {
 	return params.NewKeyTable().RegisterParamSet(&Params{})
 }
 
-// Params - used for initializing default parameter for slashing at genesis
+// Params - used for initializing default parameter for {{ .ModuleName }} at genesis
 type Params struct {
 	// TODO: Add your Paramaters to the Paramter struct
 	// KeyParamName string `json:"key_param_name"`
