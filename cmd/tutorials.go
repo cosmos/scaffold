@@ -31,14 +31,17 @@ type userRepoArgs struct {
 	Repo string `json:"repo"`
 }
 
-// nsCmd represents the nameservice tutorial generator
-var nsCmd = &cobra.Command{
-	Use:   "nameservice [user] [repo]",
-	Short: "Generates the nameservice application",
-	Args:  cobra.ExactArgs(2),
+// tutCmd represents the tutorial generator, either nameservice or hellochain can be created
+var tutCmd = &cobra.Command{
+	Use:   "tutorial [tutorial-name] [user] [repo]",
+	Short: "Generates one of the tutorial apps, currently either the 'nameservice' or 'hellochain'",
+	Args:  cobra.ExactArgs(3),
 	Run: func(cmd *cobra.Command, args []string) {
-		ns := userRepoArgs{args[0], args[1]}
-		err := scaffoldTutorial("nameservice", outputPath, ns)
+		ns := userRepoArgs{args[1], args[2]}
+		if args[0] =! "hellochain" || args[0] != "nameservice" {
+			return
+		}
+		err := scaffoldTutorial(args[0], outputPath, ns)
 		if err != nil {
 			fmt.Println(err)
 			return
@@ -46,22 +49,7 @@ var nsCmd = &cobra.Command{
 	},
 }
 
-// hcCmd represents the hellochain tutorial generator
-var hcCmd = &cobra.Command{
-	Use:   "hellochain [user] [repo]",
-	Short: "Generates the hellochain application",
-	Args:  cobra.ExactArgs(2),
-	Run: func(cmd *cobra.Command, args []string) {
-		ns := userRepoArgs{args[0], args[1]}
-		err := scaffoldTutorial("hellochain", outputPath, ns)
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-	},
-}
-
-// Give this the name of the tutorial and any arguements necessary for
+// Give this the name of the tutorial and any arguments necessary for
 // said tutorial
 func scaffoldTutorial(name string, op string, args interface{}) error {
 	// Fetch the scaffold files for the tutorial
@@ -160,10 +148,4 @@ func applyTemplates(files []string, op string, args interface{}) error {
 		fmt.Printf("Created %s...\n", np)
 	}
 	return nil
-}
-
-// Register the commands in init
-func init() {
-	rootCmd.AddCommand(nsCmd)
-	rootCmd.AddCommand(hcCmd)
 }
