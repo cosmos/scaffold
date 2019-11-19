@@ -10,7 +10,6 @@ require (
 	github.com/spf13/afero v1.2.2 // indirect
 	github.com/spf13/cobra v0.0.5
 	github.com/spf13/viper v1.5.0
-	github.com/tendermint/tendermint v0.32.7
-	golang.org/x/sys v0.0.0-20190813064441-fde4db37ae7a // indirect
+	github.com/tendermint/tendermint v0.32.8
 	golang.org/x/text v0.3.2 // indirect
 )
