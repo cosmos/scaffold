@@ -38,13 +38,12 @@ var tutCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(3),
 	Run: func(cmd *cobra.Command, args []string) {
 		ns := userRepoArgs{args[1], args[2]}
-		if args[0] =! "hellochain" || args[0] != "nameservice" {
-			return
-		}
-		err := scaffoldTutorial(args[0], outputPath, ns)
-		if err != nil {
-			fmt.Println(err)
-			return
+		if args[0] == "hellochain" || args[0] == "nameservice" {
+			err := scaffoldTutorial(args[0], outputPath, ns)
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
 		}
 	},
 }
