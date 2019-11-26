@@ -30,8 +30,7 @@ func scaffold(name string, op string, args UserRepoArgs) error {
 
 // Get all the files from the tutorial
 func tutorialFiles(name string) (out []string) {
-	for p, n := range AssetNames() {
-		fmt.Println(p, n)
+	for _, n := range AssetNames() {
 		if filepath.HasPrefix(n, name) {
 			out = append(out, n)
 		}
@@ -42,7 +41,6 @@ func tutorialFiles(name string) (out []string) {
 // Creates a unique folder for each passed in file
 func createUniqueFolders(files []string, op, tutorial, nameLowerCase string) error {
 	for _, dir := range dirs(files, tutorial, nameLowerCase) {
-		fmt.Println("makedir", filepath.Join(op, dir))
 		err := os.MkdirAll(filepath.Join(op, dir), os.ModePerm)
 		if err != nil {
 			return err
@@ -52,7 +50,6 @@ func createUniqueFolders(files []string, op, tutorial, nameLowerCase string) err
 }
 
 func replaceTutorial(oldPath, tutorial, nameLowerCase string) string {
-	// return oldPath[:0] + strings.Replace(oldPath[0:], tutorial, nameLowerCase, 1)
 	return strings.Replace(oldPath, tutorial, nameLowerCase, -1)
 
 }
@@ -86,10 +83,6 @@ func uniqueStrings(s []string) []string {
 func applyTemplates(files []string, op string, args UserRepoArgs) error {
 	for _, f := range files {
 
-		// i := strings.LastIndex(f, args.Tutorial)
-		// oldFile := f[:0] + strings.Replace(f[0:], args.NameLowerCase, args.Tutorial, 1)
-		// fmt.Println("oldFile", oldFile)
-		fmt.Println("newFile", f)
 		replaced := replaceTutorial(f, args.Tutorial, args.NameLowerCase)
 
 		// fetch the template
