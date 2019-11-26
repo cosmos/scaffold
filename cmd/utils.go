@@ -52,7 +52,9 @@ func createUniqueFolders(files []string, op, tutorial, nameLowerCase string) err
 }
 
 func replaceTutorial(oldPath, tutorial, nameLowerCase string) string {
-	return oldPath[:0] + strings.Replace(oldPath[0:], tutorial, nameLowerCase, 1)
+	// return oldPath[:0] + strings.Replace(oldPath[0:], tutorial, nameLowerCase, 1)
+	return strings.Replace(oldPath, tutorial, nameLowerCase, -1)
+
 }
 
 // Given a list of filepaths returns a list of directories
