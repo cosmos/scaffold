@@ -16,6 +16,12 @@ build: generate mod
 	@go build -mod=readonly -o build/scaffold main.go
 
 install: generate mod
-	@ go install -mod=readonly ./...
+	@go install -mod=readonly ./...
+
+# look into .golangci.yml for enabling / disabling linters
+lint:
+	@echo "--> Running linter"
+	@golangci-lint run
+	go mod verify
 
 .PHONY: all tools generate build install
