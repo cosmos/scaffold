@@ -20,5 +20,5 @@ const (
 // TODO: Fill out some custom errors for the module
 // You can see how they are constructed below:
 // func ErrInvalid(codespace sdk.CodespaceType) sdk.Error {
-// 	return sdkerrors.Wrap(string(codespace), uint32(CodeInvalid), "custom error message")
+// 	return sdk.NewError(codespace, CodeInvalid, "custom error message")
 // }

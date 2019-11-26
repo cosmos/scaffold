@@ -13,17 +13,14 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
-	sim "github.com/{{ .User }}/{{ .Repo }}/x/{{ .ModuleName }}"
 	"github.com/{{ .User }}/{{ .Repo }}/x/{{ .ModuleName }}/client/cli"
 	"github.com/{{ .User }}/{{ .Repo }}/x/{{ .ModuleName }}/client/rest"
 	"github.com/{{ .User }}/{{ .Repo }}/x/{{ .ModuleName }}/internal/types"
-	"github.com/{{ .User }}/{{ .Repo }}/x/{{ .ModuleName }}/simulation"
 )
 
 var (
 	_ module.AppModule           = AppModule{}
 	_ module.AppModuleBasic      = AppModuleBasic{}
-	_ module.AppModuleSimulation = AppModuleSimulation{}
 )
 
 // AppModuleBasic defines the basic application module used by the {{ .ModuleName }} module.
@@ -74,30 +71,9 @@ func (AppModuleBasic) GetQueryCmd(cdc *codec.Codec) *cobra.Command {
 
 //____________________________________________________________________________
 
-// AppModuleSimulation defines the module simulation functions used by the {{ .ModuleName }} module.
-type AppModuleSimulation struct{}
-
-// RegisterStoreDecoder registers a decoder for {{ .ModuleName }} module's types
-func (AppModuleSimulation) RegisterStoreDecoder(sdr sdk.StoreDecoderRegistry) {
-	sdr[StoreKey] = simulation.DecodeStore
-}
-
-// GenerateGenesisState creates a randomized GenState of the {{ .ModuleName }} module.
-func (AppModuleSimulation) GenerateGenesisState(simState *module.SimulationState) {
-	simulation.RandomizedGenState(simState)
-}
-
-// RandomizedParams creates randomized {{ .ModuleName }} param changes for the simulator.
-func (AppModuleSimulation) RandomizedParams(r *rand.Rand) []sim.ParamChange {
-	return simulation.ParamChanges(r)
-}
-
-//____________________________________________________________________________
-
 // AppModule implements an application module for the {{ .ModuleName }} module.
 type AppModule struct {
 	AppModuleBasic
-	AppModuleSimulation
 
 	keeper        Keeper
 	// TODO: Add keepers that your application depends on
@@ -107,7 +83,6 @@ NewAppModule creates a new AppModule object
 func NewAppModule(k Keeper, /*TODO: Add Keepers that your application depends on*/) AppModule {
 	return AppModule{
 		AppModuleBasic:      AppModuleBasic{},
-		AppModuleSimulation: AppModuleSimulation{},
 		keeper:              k,
 		// TODO: Add keepers that your application depends on
 	}
