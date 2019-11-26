@@ -6,24 +6,24 @@ import (
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/context"
 	"github.com/cosmos/cosmos-sdk/codec"
-	"github.com/{{ .User }}/{{ .Repo }}/nameservice/x/nameservice/internal/types"
+	"github.com/{{ .User }}/{{ .Repo }}/{{ .NameLowerCase }}/x/nameservice/internal/types"
 	"github.com/spf13/cobra"
 )
 
 func GetQueryCmd(storeKey string, cdc *codec.Codec) *cobra.Command {
-	nameserviceQueryCmd := &cobra.Command{
+	{{ .NameLowerCase }}QueryCmd := &cobra.Command{
 		Use:                        types.ModuleName,
-		Short:                      "Querying commands for the nameservice module",
+		Short:                      "Querying commands for the {{ .NameLowerCase }} module",
 		DisableFlagParsing:         true,
 		SuggestionsMinimumDistance: 2,
 		RunE:                       client.ValidateCmd,
 	}
-	nameserviceQueryCmd.AddCommand(client.GetCommands(
+	{{ .NameLowerCase }}QueryCmd.AddCommand(client.GetCommands(
 		GetCmdResolveName(storeKey, cdc),
 		GetCmdWhois(storeKey, cdc),
 		GetCmdNames(storeKey, cdc),
 	)...)
-	return nameserviceQueryCmd
+	return {{ .NameLowerCase }}QueryCmd
 }
 
 // GetCmdResolveName queries information about a name

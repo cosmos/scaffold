@@ -1,8 +1,8 @@
-package nameservice
+package {{ .NameLowerCase }}
 
 import (
-	"github.com/{{ .User }}/{{ .Repo }}/nameservice/x/nameservice/internal/keeper"
-	"github.com/{{ .User }}/{{ .Repo }}/nameservice/x/nameservice/internal/types"
+	"github.com/{{ .User }}/{{ .Repo }}/{{ .NameLowerCase }}/x/nameservice/internal/keeper"
+	"github.com/{{ .User }}/{{ .Repo }}/{{ .NameLowerCase }}/x/nameservice/internal/types"
 )
 
 const (

@@ -9,25 +9,25 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth"
 	"github.com/cosmos/cosmos-sdk/x/auth/client/utils"
-	"github.com/{{ .User }}/{{ .Repo }}/nameservice/x/nameservice/internal/types"
+	"github.com/{{ .User }}/{{ .Repo }}/{{ .NameLowerCase }}/x/nameservice/internal/types"
 )
 
 func GetTxCmd(storeKey string, cdc *codec.Codec) *cobra.Command {
-	nameserviceTxCmd := &cobra.Command{
+	{{ .NameLowerCase }}TxCmd := &cobra.Command{
 		Use:                        types.ModuleName,
-		Short:                      "Nameservice transaction subcommands",
+		Short:                      "{ .NameRaw } transaction subcommands",
 		DisableFlagParsing:         true,
 		SuggestionsMinimumDistance: 2,
 		RunE:                       client.ValidateCmd,
 	}
 
-	nameserviceTxCmd.AddCommand(client.PostCommands(
+	{{ .NameLowerCase }}TxCmd.AddCommand(client.PostCommands(
 		GetCmdBuyName(cdc),
 		GetCmdSetName(cdc),
 		GetCmdDeleteName(cdc),
 	)...)
 
-	return nameserviceTxCmd
+	return {{ .NameLowerCase }}TxCmd
 }
 
 // GetCmdBuyName is the CLI command for sending a BuyName transaction
