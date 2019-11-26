@@ -12,12 +12,25 @@ Then the binary should be installed in your `$GOBIN` so you can then run:
 scaffold --help
 ```
 
-## Tutorial
+## App
 
-To scaffold out the `nameservice` tutorial example just run the following:
+To scaffold out a ready to go app run the following:
 
 ```bash
-cd $GOPATH/src/github.com/{{ .Username }}
+scaffold app [lvl-1] myghusername myrepo
+```
+
+There are different levels of apps, this mainly separates how many core Cosmos-SDK modules the app is initialized with.
+
+### Levels
+
+- `lvl-1`: Auth, Bank, Distribution, Genutil, Genaccounts, Params, Slashing, Slashing, Supply
+
+## Tutorial
+
+To scaffold out the `nameservice` tutorial example run the following:
+
+```bash
 scaffold tutorial nameservice myghusername myrepo
 ```
 
@@ -30,7 +43,7 @@ nscli --help
 nsd --help
 ```
 
-# Versioning
+## Versioning
 
 This repo will have its own versioning and contain a compatibility table:
 
