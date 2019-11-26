@@ -18,5 +18,5 @@ package main
 import "github.com/cosmos/scaffold/cmd"
 
 func main() {
-  cmd.Execute()
+	cmd.Execute()
 }

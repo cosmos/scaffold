@@ -1,9 +1,13 @@
 # Cosmos Scaffold
 
+<<<<<<< HEAD
 Requirements:
 go: 1.13+
 
 This is a scaffolding tool for CosmosSDK based applications. To build the binary, have [golang installed](https://golang.org/doc/install) and then just run:
+=======
+This is a scaffolding tool for CosmosSDK based applications. To build the binary, have v1.13 [golang installed](https://golang.org/doc/install) and then just run:
+>>>>>>> master
 
 ```bash
 make

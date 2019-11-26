@@ -6,3 +6,6 @@ cmd/bindata.go
 
 # For binaries created with make build
 build
+
+#JetBrains IDE config
+.idea
