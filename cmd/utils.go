@@ -14,7 +14,7 @@ func scaffold(name string, op string, args UserRepoArgs) error {
 	// Fetch the scaffold files for the tutorial
 	files := tutorialFiles(name)
 	// Create the necessary folders for the files
-	err := createUniqueFolders(files, op, args.Tutorial, args.NameLowerCase)
+	err := createUniqueFolders(files, op, args)
 	if err != nil {
 		return err
 	}
@@ -39,8 +39,8 @@ func tutorialFiles(name string) (out []string) {
 }
 
 // Creates a unique folder for each passed in file
-func createUniqueFolders(files []string, op, tutorial, nameLowerCase string) error {
-	for _, dir := range dirs(files, tutorial, nameLowerCase) {
+func createUniqueFolders(files []string, op string, args UserRepoArgs) error {
+	for _, dir := range dirs(files, args) {
 		err := os.MkdirAll(filepath.Join(op, dir), os.ModePerm)
 		if err != nil {
 			return err
@@ -49,15 +49,18 @@ func createUniqueFolders(files []string, op, tutorial, nameLowerCase string) err
 	return nil
 }
 
-func replaceTutorial(oldPath, tutorial, nameLowerCase string) string {
-	return strings.Replace(oldPath, tutorial, nameLowerCase, -1)
-
+func replaceTutorial(oldPath string, args UserRepoArgs) string {
+	tutorial := args.Tutorial
+	nameLowerCase := args.NameLowerCase
+	repo := args.Repo
+	newPath := strings.Replace(oldPath, tutorial, nameLowerCase, -1)
+	return strings.Replace(newPath, nameLowerCase, repo, 1)
 }
 
 // Given a list of filepaths returns a list of directories
-func dirs(files []string, tutorial, nameLowerCase string) (out []string) {
+func dirs(files []string, args UserRepoArgs) (out []string) {
 	for _, n := range files {
-		replaced := replaceTutorial(filepath.Dir(n), tutorial, nameLowerCase)
+		replaced := replaceTutorial(filepath.Dir(n), args)
 		out = append(out, replaced)
 	}
 	return uniqueStrings(out)
@@ -83,7 +86,7 @@ func uniqueStrings(s []string) []string {
 func applyTemplates(files []string, op string, args UserRepoArgs) error {
 	for _, f := range files {
 
-		replaced := replaceTutorial(f, args.Tutorial, args.NameLowerCase)
+		replaced := replaceTutorial(f, args)
 
 		// fetch the template
 		tb, err := Asset(f)
