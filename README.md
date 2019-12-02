@@ -31,7 +31,7 @@ There are different levels of apps, this mainly separates how many core Cosmos-S
 To scaffold out the `nameservice` tutorial example run the following:
 
 ```bash
-scaffold tutorial nameservice myghusername myrepo
+scaffold tutorial nameservice myghusername myrepo "Blockchain Name"
 ```
 
 Then just `cd` into the `myrepo` folder and:
