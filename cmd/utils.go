@@ -16,7 +16,6 @@ func scaffold(name string, op string, args UserRepoArgs) error {
 	files := files(name)
 	// Create the necessary folders for the files
 	err := createUniqueFolders(files, op, args)
-
 	if err != nil {
 		return err
 	}

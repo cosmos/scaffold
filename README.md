@@ -1,9 +1,13 @@
 # Cosmos Scaffold
 
+
 Requirements:
 go: 1.13+
 
+# This is a scaffolding tool for CosmosSDK based applications. To build the binary, have [golang installed](https://golang.org/doc/install) and then just run:
+
 This is a scaffolding tool for CosmosSDK based applications. To build the binary, have [golang installed](https://golang.org/doc/install) and then just run:
+
 
 ```bash
 make
@@ -42,9 +46,14 @@ scaffold app [lvl-1] myghusername myrepo
 
 There are different levels of apps, this mainly separates how many core Cosmos-SDK modules the app is initialized with.
 
+There is no need to make a directory this will happen with the command.
+
 ### Levels
 
 - `lvl-1`: Auth, Bank, Distribution, Genutil, Genaccounts, Params, Slashing, Slashing, Supply
+
+After you have chosen your level and created your app, you will need to `cd` into the directory then run
+`go get ./...` and then you will be able to run `make install`
 
 ## Module
 
