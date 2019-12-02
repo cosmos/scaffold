@@ -55,7 +55,7 @@ func TestMsgSetNameGetSignBytes(t *testing.T) {
 	var msg = NewMsgSetName(name, value, acc)
 	res := msg.GetSignBytes()
 
-	expected := `{"type":"nameservice/SetName","value":{"name":"maTurtle","owner":"cosmos1d4js690r9j","value":"1"}}`
+	expected := `{"type":"{{ .NameLowerCase }}/SetName","value":{"name":"maTurtle","owner":"cosmos1d4js690r9j","value":"1"}}`
 
 	require.Equal(t, expected, string(res))
 }
@@ -99,7 +99,7 @@ func TestMsgBuyNameGetSignBytes(t *testing.T) {
 	var msg = NewMsgBuyName(name, coins, acc)
 	res := msg.GetSignBytes()
 
-	expected := `{"type":"nameservice/BuyName","value":{"bid":[{"amount":"10","denom":"atom"}],` +
+	expected := `{"type":"{{ .NameLowerCase }}/BuyName","value":{"bid":[{"amount":"10","denom":"atom"}],` +
 		`"buyer":"cosmos1d4js690r9j","name":"maTurtle"}}`
 
 	require.Equal(t, expected, string(res))
@@ -141,7 +141,7 @@ func TestMsgDeleteNameGetSignBytes(t *testing.T) {
 	var msg = NewMsgDeleteName(name, acc)
 	res := msg.GetSignBytes()
 
-	expected := `{"type":"nameservice/DeleteName","value":{"name":"maTurtle","owner":"cosmos1d4js690r9j"}}`
+	expected := `{"type":"{{ .NameLowerCase }}/DeleteName","value":{"name":"maTurtle","owner":"cosmos1d4js690r9j"}}`
 
 	require.Equal(t, expected, string(res))
 }

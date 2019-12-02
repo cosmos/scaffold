@@ -12,13 +12,31 @@ Then the binary should be installed in your `$GOBIN` so you can then run:
 scaffold --help
 ```
 
-## Tutorial
+## App
 
-To scaffold out the `nameservice` tutorial example just run the following:
+To scaffold out a ready to go app run the following:
 
 ```bash
-cd $GOPATH/src/github.com/{{ .Username }}
-scaffold tutorial nameservice myghusername myrepo
+scaffold app [lvl-1] myghusername myrepo
+```
+
+There are different levels of apps, this mainly separates how many core Cosmos-SDK modules the app is initialized with.
+
+There is no need to make a directory this will happen with the command.
+
+### Levels
+
+- `lvl-1`: Auth, Bank, Distribution, Genutil, Genaccounts, Params, Slashing, Slashing, Supply
+
+After you have chosen your level and created your app, you will need to `cd` into the directory then run
+`go get ./...` and then you will be able to run `make install`
+
+## Tutorial
+
+To scaffold out the `nameservice` tutorial example run the following:
+
+```bash
+scaffold tutorial nameservice myghusername myrepo "Blockchain Name"
 ```
 
 Then just `cd` into the `myrepo` folder and:
@@ -30,7 +48,7 @@ nscli --help
 nsd --help
 ```
 
-# Versioning
+## Versioning
 
 This repo will have its own versioning and contain a compatibility table:
 
