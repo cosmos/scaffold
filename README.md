@@ -28,6 +28,9 @@ There is no need to make a directory this will happen with the command.
 
 - `lvl-1`: Auth, Bank, Distribution, Genutil, Genaccounts, Params, Slashing, Slashing, Supply
 
+After you have chosen your level and created your app, you will need to `cd` into the directory then run
+`go get ./...` and then you will be able to run `make install`
+
 ## Tutorial
 
 To scaffold out the `nameservice` tutorial example run the following:
