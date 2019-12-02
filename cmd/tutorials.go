@@ -38,17 +38,21 @@ type UserRepoArgs struct {
 var tutCmd = &cobra.Command{
 	Use:   "tutorial [tutorial-name] [user] [repo] [name]",
 	Short: "Generates one of the tutorial apps, currently either the 'nameservice' or 'hellochain'",
-	Args:  cobra.ExactArgs(4),
+	Args:  cobra.MinimumNArgs(3),
 	Run: func(cmd *cobra.Command, args []string) {
 
+		tutorial := args[0]
 		nameRaw := args[3]
+		if nameRaw == "" {
+			nameRaw = tutorial
+		}
 		nameCapitalCamelCase := strcase.ToCamel(nameRaw)
 		nameLowerCamelCase := strcase.ToLowerCamel(nameRaw)
 		nameLowerCase := strings.ToLower(nameLowerCamelCase)
 
-		ns := UserRepoArgs{args[0], args[1], args[2], nameRaw, nameLowerCase, nameCapitalCamelCase, nameLowerCamelCase}
-		if args[0] == "hellochain" || args[0] == "nameservice" {
-			err := scaffold(args[0], outputPath, ns)
+		ns := UserRepoArgs{tutorial, args[1], args[2], nameRaw, nameLowerCase, nameCapitalCamelCase, nameLowerCamelCase}
+		if tutorial == "hellochain" || tutorial == "nameservice" {
+			err := scaffold(tutorial, outputPath, ns)
 			if err != nil {
 				fmt.Println(err)
 				return
