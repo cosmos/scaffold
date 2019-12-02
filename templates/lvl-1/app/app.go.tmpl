@@ -2,12 +2,12 @@ package app
 
 import (
 	"encoding/json"
+	"io"
 	"os"
 
 	abci "github.com/tendermint/tendermint/abci/types"
 	cmn "github.com/tendermint/tendermint/libs/common"
 	"github.com/tendermint/tendermint/libs/log"
-	tmtypes "github.com/tendermint/tendermint/types"
 	dbm "github.com/tendermint/tm-db"
 
 	bam "github.com/cosmos/cosmos-sdk/baseapp"
@@ -24,18 +24,18 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/slashing"
 	"github.com/cosmos/cosmos-sdk/x/staking"
 	"github.com/cosmos/cosmos-sdk/x/supply"
-
-	"github.com/{{ .User }}/{{ .Repo }}/x/{{ .NameLowerCase }}"
 )
 
-const appName = "{{ .NameLowerCase }}"
+const appName = "app"
 
 var (
 	// default home directories for the application CLI
-	DefaultCLIHome = os.ExpandEnv("$HOME/.nscli")
+	// TODO: rename your cli
+	DefaultCLIHome = os.ExpandEnv("$HOME/.acli")
 
-	// DefaultNodeHome sets the folder where the application data and configuration will be stored
-	DefaultNodeHome = os.ExpandEnv("$HOME/.nsd")
+	// DefaultNodeHome sets the folder where the applcation data and configuration will be stored
+	// TODO: rename your daemon
+	DefaultNodeHome = os.ExpandEnv("$HOME/.asd")
 
 	// NewBasicManager is in charge of setting up basic module elemnets
 	ModuleBasics = module.NewBasicManager(
@@ -48,8 +48,7 @@ var (
 		params.AppModuleBasic{},
 		slashing.AppModuleBasic{},
 		supply.AppModuleBasic{},
-
-		{{ .NameLowerCase }}.AppModule{},
+		// TODO: Add your module(s) AppModuleBasic
 	)
 	// account permissions
 	maccPerms = map[string][]string{
@@ -69,7 +68,7 @@ func MakeCodec() *codec.Codec {
 	return cdc
 }
 
-type {{ .NameLowerCamelCase }}App struct {
+type newApp struct {
 	*bam.BaseApp
 	cdc *codec.Codec
 
@@ -85,16 +84,15 @@ type {{ .NameLowerCamelCase }}App struct {
 	distrKeeper    distr.Keeper
 	supplyKeeper   supply.Keeper
 	paramsKeeper   params.Keeper
-	nsKeeper       {{ .NameLowerCase }}.Keeper
+	// TODO: Add your module(s)
 
 	// Module Manager
 	mm *module.Manager
 }
 
-// New{{ .NameCapitalCamelCase }}App is a constructor function for {{ .NameLowerCamelCase }}App
-func New{{ .NameCapitalCamelCase }}App(
-	logger log.Logger, db dbm.DB, baseAppOptions ...func(*bam.BaseApp),
-) *{{ .NameLowerCamelCase }}App {
+// NewNameServiceApp is a constructor function for nameServiceApp
+func NewInitApp(logger log.Logger, db dbm.DB, traceStore io.Writer, loadLatest bool,
+	invCheckPeriod uint, baseAppOptions ...func(*bam.BaseApp)) *newApp {
 
 	// First define the top level codec that will be shared by the different modules
 	cdc := MakeCodec()
@@ -105,12 +103,12 @@ func New{{ .NameCapitalCamelCase }}App(
 	bApp.SetAppVersion(version.Version)
 
 	keys := sdk.NewKVStoreKeys(bam.MainStoreKey, auth.StoreKey, staking.StoreKey,
-		supply.StoreKey, distr.StoreKey, slashing.StoreKey, params.StoreKey, {{ .NameLowerCase }}.StoreKey)
+		supply.StoreKey, distr.StoreKey, slashing.StoreKey, params.StoreKey)
 
 	tkeys := sdk.NewTransientStoreKeys(staking.TStoreKey, params.TStoreKey)
 
 	// Here you initialize your application with the store keys it requires
-	var app = &{{ .NameLowerCamelCase }}App{
+	var app = &newApp{
 		BaseApp: bApp,
 		cdc:     cdc,
 		keys:    keys,
@@ -188,22 +186,16 @@ func New{{ .NameCapitalCamelCase }}App(
 			app.slashingKeeper.Hooks()),
 	)
 
-	// The {{ .NameCapitalCamelCase }}Keeper is the Keeper from the module for this tutorial
-	// It handles interactions with the namestore
-	app.nsKeeper = {{ .NameLowerCase }}.NewKeeper(
-		app.bankKeeper,
-		keys[{{ .NameLowerCase }}.StoreKey],
-		app.cdc,
-	)
+	// TODO: Add your module(s) keepers
 
 	app.mm = module.NewManager(
 		genaccounts.NewAppModule(app.accountKeeper),
 		genutil.NewAppModule(app.accountKeeper, app.stakingKeeper, app.BaseApp.DeliverTx),
 		auth.NewAppModule(app.accountKeeper),
 		bank.NewAppModule(app.bankKeeper, app.accountKeeper),
-		{{ .NameLowerCase }}.NewAppModule(app.nsKeeper, app.bankKeeper),
 		supply.NewAppModule(app.supplyKeeper, app.accountKeeper),
 		distr.NewAppModule(app.distrKeeper, app.supplyKeeper),
+		// TODO: Add your module(s)
 		slashing.NewAppModule(app.slashingKeeper, app.stakingKeeper),
 		staking.NewAppModule(app.stakingKeeper, app.distrKeeper, app.accountKeeper, app.supplyKeeper),
 	)
@@ -221,7 +213,7 @@ func New{{ .NameCapitalCamelCase }}App(
 		auth.ModuleName,
 		bank.ModuleName,
 		slashing.ModuleName,
-		{{ .NameLowerCase }}.ModuleName,
+		// TODO: Add your module(s)
 		supply.ModuleName,
 		genutil.ModuleName,
 	)
@@ -262,7 +254,7 @@ func NewDefaultGenesisState() GenesisState {
 	return ModuleBasics.DefaultGenesis()
 }
 
-func (app *{{ .NameLowerCamelCase }}App) InitChainer(ctx sdk.Context, req abci.RequestInitChain) abci.ResponseInitChain {
+func (app *newApp) InitChainer(ctx sdk.Context, req abci.RequestInitChain) abci.ResponseInitChain {
 	var genesisState GenesisState
 
 	err := app.cdc.UnmarshalJSON(req.AppStateBytes, &genesisState)
@@ -273,41 +265,22 @@ func (app *{{ .NameLowerCamelCase }}App) InitChainer(ctx sdk.Context, req abci.R
 	return app.mm.InitGenesis(ctx, genesisState)
 }
 
-func (app *{{ .NameLowerCamelCase }}App) BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock) abci.ResponseBeginBlock {
+func (app *newApp) BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock) abci.ResponseBeginBlock {
 	return app.mm.BeginBlock(ctx, req)
 }
-func (app *{{ .NameLowerCamelCase }}App) EndBlocker(ctx sdk.Context, req abci.RequestEndBlock) abci.ResponseEndBlock {
+func (app *newApp) EndBlocker(ctx sdk.Context, req abci.RequestEndBlock) abci.ResponseEndBlock {
 	return app.mm.EndBlock(ctx, req)
 }
-func (app *{{ .NameLowerCamelCase }}App) LoadHeight(height int64) error {
+func (app *newApp) LoadHeight(height int64) error {
 	return app.LoadVersion(height, app.keys[bam.MainStoreKey])
 }
 
 // ModuleAccountAddrs returns all the app's module account addresses.
-func (app *{{ .NameLowerCamelCase }}App) ModuleAccountAddrs() map[string]bool {
+func (app *newApp) ModuleAccountAddrs() map[string]bool {
 	modAccAddrs := make(map[string]bool)
 	for acc := range maccPerms {
 		modAccAddrs[supply.NewModuleAddress(acc).String()] = true
 	}
 
 	return modAccAddrs
-}
-
-//_________________________________________________________
-
-func (app *{{ .NameLowerCamelCase }}App) ExportAppStateAndValidators(forZeroHeight bool, jailWhiteList []string,
-) (appState json.RawMessage, validators []tmtypes.GenesisValidator, err error) {
-
-	// as if they could withdraw from the start of the next block
-	ctx := app.NewContext(true, abci.Header{Height: app.LastBlockHeight()})
-
-	genState := app.mm.ExportGenesis(ctx)
-	appState, err = codec.MarshalJSONIndent(app.cdc, genState)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	validators = staking.WriteValidators(ctx, app.stakingKeeper)
-
-	return appState, validators, nil
 }

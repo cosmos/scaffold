@@ -36,6 +36,17 @@ var rootCmd = &cobra.Command{
 	Short: "Aids in scaffolding out CosmosSDK based applications",
 }
 
+// UserRepoArgs contain arguments for scaffolding
+type UserRepoArgs struct {
+	Dir                  string `json:"dir"`
+	User                 string `json:"user"`
+	Repo                 string `json:"repo"`
+	NameRaw              string `json:"nameRaw"`
+	NameLowerCase        string `json:"nameLowerCase"`
+	NameCapitalCamelCase string `json:"nameCapitalCamelCase"`
+	NameLowerCamelCase   string `json:"nameLowerCamelCase"`
+}
+
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
@@ -56,7 +67,7 @@ func init() {
 	rootCmd.PersistentFlags().StringVarP(&outputPath, "output-path", "o", "", "Path to output")
 
 	// Commands for scaffolding
-	rootCmd.AddCommand(tutCmd)
+	rootCmd.AddCommand(tutCmd, appCmd)
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.

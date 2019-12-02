@@ -3,7 +3,7 @@ PACKAGES=$(shell go list ./... | grep -v '/simulation')
 VERSION := $(shell echo $(shell git describe --tags) | sed 's/^v//')
 COMMIT := $(shell git log -1 --format='%H')
 
-ldflags = -X github.com/cosmos/cosmos-sdk/version.Name=NameService \
+ldflags = -X github.com/cosmos/cosmos-sdk/version.Name={{ .NameCapitalCamelCase }} \
 	-X github.com/cosmos/cosmos-sdk/version.ServerName=nsd \
 	-X github.com/cosmos/cosmos-sdk/version.ClientName=nscli \
 	-X github.com/cosmos/cosmos-sdk/version.Version=$(VERSION) \

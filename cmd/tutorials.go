@@ -17,25 +17,39 @@ package cmd
 
 import (
 	"fmt"
+	"strings"
 
+	"github.com/iancoleman/strcase"
 	"github.com/spf13/cobra"
 )
 
-// Arguments for nameservice scaffolding
-type userRepoArgs struct {
-	User string `json:"user"`
-	Repo string `json:"repo"`
-}
-
 // tutCmd represents the tutorial generator, either nameservice or hellochain can be created
 var tutCmd = &cobra.Command{
-	Use:   "tutorial [tutorial-name] [user] [repo]",
+	Use:   "tutorial [tutorial-name] [user] [repo] [name]",
 	Short: "Generates one of the tutorial apps, currently either the 'nameservice' or 'hellochain'",
-	Args:  cobra.ExactArgs(3),
+	Args:  cobra.MinimumNArgs(3),
 	Run: func(cmd *cobra.Command, args []string) {
-		ns := userRepoArgs{args[1], args[2]}
-		if args[0] == "hellochain" || args[0] == "nameservice" {
-			err := scaffold(args[0], outputPath, ns)
+
+		dir := args[0]
+		nameRaw := args[3]
+		if nameRaw == "" {
+			nameRaw = dir
+		}
+		nameCapitalCamelCase := strcase.ToCamel(nameRaw)
+		nameLowerCamelCase := strcase.ToLowerCamel(nameRaw)
+		nameLowerCase := strings.ToLower(nameLowerCamelCase)
+
+		ns := UserRepoArgs{
+			Dir:                  dir,
+			User:                 args[1],
+			Repo:                 args[2],
+			NameRaw:              nameRaw,
+			NameLowerCase:        nameLowerCase,
+			NameCapitalCamelCase: nameCapitalCamelCase,
+			NameLowerCamelCase:   nameLowerCamelCase,
+		}
+		if dir == "hellochain" || dir == "nameservice" {
+			err := scaffold(dir, outputPath, ns)
 			if err != nil {
 				fmt.Println(err)
 				return
