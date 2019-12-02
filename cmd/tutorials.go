@@ -23,17 +23,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// Arguments for nameservice scaffolding
-type UserRepoArgs struct {
-	Tutorial             string `json:"tutorial"`
-	User                 string `json:"user"`
-	Repo                 string `json:"repo"`
-	NameRaw              string `json:"nameRaw"`
-	NameLowerCase        string `json:"nameLowerCase"`
-	NameCapitalCamelCase string `json:"nameCapitalCamelCase"`
-	NameLowerCamelCase   string `json:"nameLowerCamelCase"`
-}
-
 // tutCmd represents the tutorial generator, either nameservice or hellochain can be created
 var tutCmd = &cobra.Command{
 	Use:   "tutorial [tutorial-name] [user] [repo] [name]",
@@ -50,7 +39,15 @@ var tutCmd = &cobra.Command{
 		nameLowerCamelCase := strcase.ToLowerCamel(nameRaw)
 		nameLowerCase := strings.ToLower(nameLowerCamelCase)
 
-		ns := UserRepoArgs{tutorial, args[1], args[2], nameRaw, nameLowerCase, nameCapitalCamelCase, nameLowerCamelCase}
+		ns := UserRepoArgs{
+			Tutorial:             tutorial,
+			User:                 args[1],
+			Repo:                 args[2],
+			NameRaw:              nameRaw,
+			NameLowerCase:        nameLowerCase,
+			NameCapitalCamelCase: nameCapitalCamelCase,
+			NameLowerCamelCase:   nameLowerCamelCase,
+		}
 		if tutorial == "hellochain" || tutorial == "nameservice" {
 			err := scaffold(tutorial, outputPath, ns)
 			if err != nil {

@@ -41,6 +41,9 @@ func tutorialFiles(name string) (out []string) {
 // Creates a unique folder for each passed in file
 func createUniqueFolders(files []string, op string, args UserRepoArgs) error {
 	for _, dir := range dirs(files, args) {
+		fmt.Println("op is", op)
+		fmt.Println("dir is", dir)
+		fmt.Println("together are", filepath.Join(op, dir))
 		err := os.MkdirAll(filepath.Join(op, dir), os.ModePerm)
 		if err != nil {
 			return err
@@ -51,6 +54,9 @@ func createUniqueFolders(files []string, op string, args UserRepoArgs) error {
 
 func replaceTutorial(oldPath string, args UserRepoArgs) string {
 	tutorial := args.Tutorial
+	if tutorial == "" {
+		tutorial = args.App
+	}
 	nameLowerCase := args.NameLowerCase
 	repo := args.Repo
 	newPath := strings.Replace(oldPath, tutorial, nameLowerCase, -1)

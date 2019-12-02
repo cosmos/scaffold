@@ -36,6 +36,18 @@ var rootCmd = &cobra.Command{
 	Short: "Aids in scaffolding out CosmosSDK based applications",
 }
 
+// UserRepoArgs contain arguments for scaffolding
+type UserRepoArgs struct {
+	App                  string `json:"app"`
+	Tutorial             string `json:"tutorial"`
+	User                 string `json:"user"`
+	Repo                 string `json:"repo"`
+	NameRaw              string `json:"nameRaw"`
+	NameLowerCase        string `json:"nameLowerCase"`
+	NameCapitalCamelCase string `json:"nameCapitalCamelCase"`
+	NameLowerCamelCase   string `json:"nameLowerCamelCase"`
+}
+
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {

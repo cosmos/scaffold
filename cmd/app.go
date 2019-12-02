@@ -12,7 +12,11 @@ var appCmd = &cobra.Command{
 	Short: "Generates a ",
 	Args:  cobra.ExactArgs(3),
 	Run: func(cmd *cobra.Command, args []string) {
-		ns := userRepoArgs{args[1], args[2]}
+		ns := UserRepoArgs{
+			App:  args[0],
+			User: args[1],
+			Repo: args[2],
+		}
 		err := scaffold(args[0], outputPath, ns)
 		if err != nil {
 			fmt.Println(err)
