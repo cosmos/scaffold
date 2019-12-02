@@ -13,7 +13,7 @@ import (
 	authcmd "github.com/cosmos/cosmos-sdk/x/auth/client/cli"
 	authrest "github.com/cosmos/cosmos-sdk/x/auth/client/rest"
 	bankcmd "github.com/cosmos/cosmos-sdk/x/bank/client/cli"
-	app "github.com/{{ .User }}/{{ .Repo }}/nameservice"
+	app "github.com/{{ .User }}/{{ .Repo }}"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	amino "github.com/tendermint/go-amino"
@@ -34,7 +34,7 @@ func main() {
 
 	rootCmd := &cobra.Command{
 		Use:   "nscli",
-		Short: "nameservice Client",
+		Short: "{{ .NameLowerCase }} Client",
 	}
 
 	// Add --chain-id to persistent flags and mark it required
