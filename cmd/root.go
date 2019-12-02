@@ -45,6 +45,7 @@ type UserRepoArgs struct {
 	NameLowerCase        string `json:"nameLowerCase"`
 	NameCapitalCamelCase string `json:"nameCapitalCamelCase"`
 	NameLowerCamelCase   string `json:"nameLowerCamelCase"`
+	ModuleName           string `json:"moduleName"`
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
