@@ -22,6 +22,8 @@ scaffold app [lvl-1] myghusername myrepo
 
 There are different levels of apps, this mainly separates how many core Cosmos-SDK modules the app is initialized with.
 
+There is no need to make a directory this will happen with the command.
+
 ### Levels
 
 - `lvl-1`: Auth, Bank, Distribution, Genutil, Genaccounts, Params, Slashing, Slashing, Supply
