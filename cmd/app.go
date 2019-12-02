@@ -13,7 +13,7 @@ var appCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(3),
 	Run: func(cmd *cobra.Command, args []string) {
 		ns := UserRepoArgs{
-			App:  args[0],
+			Dir:  args[0],
 			User: args[1],
 			Repo: args[2],
 		}

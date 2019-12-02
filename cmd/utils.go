@@ -49,21 +49,18 @@ func createUniqueFolders(files []string, op string, args UserRepoArgs) error {
 	return nil
 }
 
-func replaceTutorial(oldPath string, args UserRepoArgs) string {
-	tutorial := args.Tutorial
-	if tutorial == "" {
-		tutorial = args.App
-	}
+func replaceDir(oldPath string, args UserRepoArgs) string {
+	dir := args.Dir
 	nameLowerCase := args.NameLowerCase
 	repo := args.Repo
-	newPath := strings.Replace(oldPath, tutorial, nameLowerCase, -1)
+	newPath := strings.Replace(oldPath, dir, nameLowerCase, -1)
 	return strings.Replace(newPath, nameLowerCase, repo, 1)
 }
 
 // Given a list of filepaths returns a list of directories
 func dirs(files []string, args UserRepoArgs) (out []string) {
 	for _, n := range files {
-		replaced := replaceTutorial(filepath.Dir(n), args)
+		replaced := replaceDir(filepath.Dir(n), args)
 		out = append(out, replaced)
 	}
 	return uniqueStrings(out)
@@ -89,7 +86,7 @@ func uniqueStrings(s []string) []string {
 func applyTemplates(files []string, op string, args UserRepoArgs) error {
 	for _, f := range files {
 
-		replaced := replaceTutorial(f, args)
+		replaced := replaceDir(f, args)
 
 		// fetch the template
 		tb, err := Asset(f)

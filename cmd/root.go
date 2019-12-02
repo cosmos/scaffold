@@ -38,8 +38,7 @@ var rootCmd = &cobra.Command{
 
 // UserRepoArgs contain arguments for scaffolding
 type UserRepoArgs struct {
-	App                  string `json:"app"`
-	Tutorial             string `json:"tutorial"`
+	Dir                  string `json:"dir"`
 	User                 string `json:"user"`
 	Repo                 string `json:"repo"`
 	NameRaw              string `json:"nameRaw"`

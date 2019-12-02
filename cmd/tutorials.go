@@ -30,17 +30,17 @@ var tutCmd = &cobra.Command{
 	Args:  cobra.MinimumNArgs(3),
 	Run: func(cmd *cobra.Command, args []string) {
 
-		tutorial := args[0]
+		dir := args[0]
 		nameRaw := args[3]
 		if nameRaw == "" {
-			nameRaw = tutorial
+			nameRaw = dir
 		}
 		nameCapitalCamelCase := strcase.ToCamel(nameRaw)
 		nameLowerCamelCase := strcase.ToLowerCamel(nameRaw)
 		nameLowerCase := strings.ToLower(nameLowerCamelCase)
 
 		ns := UserRepoArgs{
-			Tutorial:             tutorial,
+			Dir:                  dir,
 			User:                 args[1],
 			Repo:                 args[2],
 			NameRaw:              nameRaw,
@@ -48,8 +48,8 @@ var tutCmd = &cobra.Command{
 			NameCapitalCamelCase: nameCapitalCamelCase,
 			NameLowerCamelCase:   nameLowerCamelCase,
 		}
-		if tutorial == "hellochain" || tutorial == "nameservice" {
-			err := scaffold(tutorial, outputPath, ns)
+		if dir == "hellochain" || dir == "nameservice" {
+			err := scaffold(dir, outputPath, ns)
 			if err != nil {
 				fmt.Println(err)
 				return
