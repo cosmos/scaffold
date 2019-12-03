@@ -14,9 +14,13 @@ var tutCmd = &cobra.Command{
 	Short: "Generates one of the tutorial apps, currently either the 'nameservice' or 'hellochain'",
 	Args:  cobra.MinimumNArgs(3),
 	Run: func(cmd *cobra.Command, args []string) {
-
+		nameRaw := ""
 		dir := args[0]
-		nameRaw := args[3]
+
+		if len(args) == 4 {
+			nameRaw = args[3]
+		}
+
 		if nameRaw == "" {
 			nameRaw = dir
 		}
