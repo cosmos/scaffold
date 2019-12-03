@@ -1,8 +1,8 @@
-package {{ .ModuleName}}
+package {{ .NameLowerCase }}
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/{{ .Repo }}/{{ .Repo }}/x/{{ .ModuleName }}/internal/types"
+	"github.com/{{ .User }}/{{ .Repo }}/x/{{ .NameLowerCase }}/internal/types"
 )
 
 // InitGenesis initialize default parameters

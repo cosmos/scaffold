@@ -11,7 +11,7 @@ import (
 type CodeType = sdk.CodeType
 
 const (
-	// Default {{ .ModuleName }} codespace
+	// Default {{ .NameLowerCase }} codespace
 	DefaultCodespace sdk.CodespaceType = ModuleName
 
 	// CodeInvalid      CodeType = 101
@@ -20,5 +20,5 @@ const (
 // TODO: Fill out some custom errors for the module
 // You can see how they are constructed below:
 // func ErrInvalid(codespace sdk.CodespaceType) sdk.Error {
-// 	return sdk.NewError(codespace, CodeInvalid, "custom error message")
+// 	return sdkerrors(codespace, CodeInvalid, "custom error message")
 // }

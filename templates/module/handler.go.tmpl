@@ -1,13 +1,13 @@
-package {{ .ModuleName }}
+package {{ .NameLowerCase }}
 
 import (
 	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/{{ .User }}/{{ .Repo }}/x/{{ .ModuleName }}/internal/types"
+	"github.com/{{ .User }}/{{ .Repo }}/x/{{ .NameLowerCase }}/internal/types"
 )
 
-// NewHandler creates an sdk.Handler for all the {{ .ModuleName }} type messages
+// NewHandler creates an sdk.Handler for all the {{ .NameLowerCase }} type messages
 func NewHandler(k Keeper) sdk.Handler {
 	return func(ctx sdk.Context, msg sdk.Msg) sdk.Result {
 		ctx = ctx.WithEventManager(sdk.NewEventManager())

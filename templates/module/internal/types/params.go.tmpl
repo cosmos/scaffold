@@ -20,12 +20,12 @@ var (
 	// KeyParamName          = []byte("ParamName")
 )
 
-// ParamKeyTable for {{ .ModuleName }} module
+// ParamKeyTable for {{ .NameLowerCase }} module
 func ParamKeyTable() params.KeyTable {
 	return params.NewKeyTable().RegisterParamSet(&Params{})
 }
 
-// Params - used for initializing default parameter for {{ .ModuleName }} at genesis
+// Params - used for initializing default parameter for {{ .NameLowerCase }} at genesis
 type Params struct {
 	// TODO: Add your Paramaters to the Paramter struct
 	// KeyParamName string `json:"key_param_name"`
@@ -51,6 +51,7 @@ func (p *Params) ParamSetPairs() params.ParamSetPairs {
 	return params.ParamSetPairs{
 		// TODO: Pair your key with the param
 		// params.NewParamSetPair(KeyParamName, &p.ParamName),
+	}
 }
 
 // DefaultParams defines the parameters for this module

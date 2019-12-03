@@ -8,10 +8,10 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/{{ .User }}/{{ .Repo }}/x/{{ .ModuleName }}/internal/types"
+	"github.com/{{ .User }}/{{ .Repo }}/x/{{ .NameLowerCase }}/internal/types"
 )
 
-// Keeper of the {{ .ModuleName }} store
+// Keeper of the {{ .NameLowerCase }} store
 type Keeper struct {
 	storeKey   sdk.StoreKey
 	cdc        *codec.Codec
@@ -19,7 +19,7 @@ type Keeper struct {
 	codespace  sdk.CodespaceType
 }
 
-// NewKeeper creates a {{ .ModuleName }} keeper
+// NewKeeper creates a {{ .NameLowerCase }} keeper
 func NewKeeper(cdc *codec.Codec, key sdk.StoreKey, sk types.StakingKeeper, paramspace types.ParamSubspace, codespace sdk.CodespaceType) Keeper {
 	keeper := Keeper{
 		storeKey:   key,

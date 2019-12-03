@@ -4,7 +4,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-// Query endpoints supported by the {{ .ModuleName }} querier
+// Query endpoints supported by the {{ .NameLowerCase }} querier
 const (
 	//TODO: Describe query parametes
 )
@@ -13,7 +13,7 @@ const (
 Below you will be able how to set your own queries:
 
 QueryInfoParams defines the params for the following queries:
-- 'custom/{{ .ModuleName }}/signingInfo'
+- 'custom/{{ .NameLowerCase }}/signingInfo'
 type QueryParams struct {
 	ConsAddress sdk.ConsAddress
 }
