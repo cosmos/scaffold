@@ -1,18 +1,3 @@
-/*
-Copyright © 2019 NAME HERE <EMAIL ADDRESS>
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
 package cmd
 
 import (
@@ -54,6 +39,52 @@ var tutCmd = &cobra.Command{
 				fmt.Println(err)
 				return
 			}
+		}
+	},
+}
+
+// moduleCmd
+var moduleCmd = &cobra.Command{
+	Use:   "module [user] [repo] [moduleName]",
+	Short: "Generate a empty module for use in the Cosmos-SDK",
+	Args:  cobra.ExactArgs(3),
+	Run: func(cmd *cobra.Command, args []string) {
+		nameRaw := args[2]
+
+		// nameCapitalCamelCase := strcase.ToCamel(nameRaw)
+		// nameLowerCamelCase := strcase.ToLowerCamel(nameRaw)
+		nameLowerCase := strings.ToLower(nameRaw)
+
+		mdl := UserRepoArgs{
+			User:          args[0],
+			Repo:          args[1],
+			Dir:           "module",
+			NameRaw:       nameRaw,
+			NameLowerCase: nameLowerCase,
+		}
+		err := scaffold("module", outputPath, mdl)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+	},
+}
+
+// appCmd enables scaffolding of different levels of apps
+var appCmd = &cobra.Command{
+	Use:   "app [lvl] [user] [repo]",
+	Short: "Generates a ",
+	Args:  cobra.ExactArgs(3),
+	Run: func(cmd *cobra.Command, args []string) {
+		ns := UserRepoArgs{
+			Dir:  args[0],
+			User: args[1],
+			Repo: args[2],
+		}
+		err := scaffold(args[0], outputPath, ns)
+		if err != nil {
+			fmt.Println(err)
+			return
 		}
 	},
 }

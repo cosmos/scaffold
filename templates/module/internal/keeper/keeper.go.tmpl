@@ -20,11 +20,10 @@ type Keeper struct {
 }
 
 // NewKeeper creates a {{ .NameLowerCase }} keeper
-func NewKeeper(cdc *codec.Codec, key sdk.StoreKey, sk types.StakingKeeper, paramspace types.ParamSubspace, codespace sdk.CodespaceType) Keeper {
+func NewKeeper(cdc *codec.Codec, key sdk.StoreKey, paramspace types.ParamSubspace, codespace sdk.CodespaceType) Keeper {
 	keeper := Keeper{
 		storeKey:   key,
 		cdc:        cdc,
-		sk:         sk,
 		paramspace: paramspace.WithKeyTable(types.ParamKeyTable()),
 		codespace:  codespace,
 	}
@@ -37,10 +36,11 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 }
 
 // GetPubkey returns the pubkey from the adddress-pubkey relation
-func (k Keeper) Get(ctx sdk.Context, key string) (value /* TODO: Fill out this type */, error) {
+func (k Keeper) Get(ctx sdk.Context, key string) (/* TODO: Fill out this type */, error) {
 	store := ctx.KVStore(k.storeKey)
 	var item /* TODO: Fill out this type */
-	err := k.cdc.UnmarshalBinaryLengthPrefixed(store.Get(types.GetAddrPubkeyRelationKey(address)), &pubkey)
+	byteKey := []byte(key)
+	err := k.cdc.UnmarshalBinaryLengthPrefixed(store.Get(byteKey), &item)
 	if err != nil {
 		return nil, err
 	}
@@ -55,5 +55,5 @@ func (k Keeper) set(ctx sdk.Context, key string, value /* TODO: fill out this ty
 
 func (k Keeper) delete(ctx sdk.Context, key string) {
 	store := ctx.KVStore(k.storeKey)
-	store.Delete([]byte(key)])
+	store.Delete([]byte(key))
 }

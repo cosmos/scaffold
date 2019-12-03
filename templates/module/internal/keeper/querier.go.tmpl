@@ -15,7 +15,7 @@ import (
 func NewQuerier(k Keeper) sdk.Querier {
 	return func(ctx sdk.Context, path []string, req abci.RequestQuery) ([]byte, sdk.Error) {
 		switch path[0] {
-		case types.QueryParameters:
+		case types.QueryParams:
 			return queryParams(ctx, k)
 			// TODO: Put the modules query routes
 		default:

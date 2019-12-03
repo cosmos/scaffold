@@ -24,11 +24,10 @@ func NewHandler(k Keeper) sdk.Handler {
 	}
 }
 
-// Validators must submit a transaction to unjail itself after
-// having been jailed (and thus unbonded) for downtime
+// handde<Action> does x
 func handleMsg<Action>(ctx sdk.Context, msg MsgType, k Keeper) sdk.Result {
 
-	err := k.Unjail(ctx, msg.ValidatorAddr)
+	err := k.<Action>(ctx, msg.ValidatorAddr)
 	if err != nil {
 		return err.Result()
 	}
