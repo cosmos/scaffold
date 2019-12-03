@@ -45,6 +45,7 @@ type UserRepoArgs struct {
 	NameLowerCase        string `json:"nameLowerCase"`
 	NameCapitalCamelCase string `json:"nameCapitalCamelCase"`
 	NameLowerCamelCase   string `json:"nameLowerCamelCase"`
+	ModuleName           string `json:"moduleName"`
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -67,7 +68,7 @@ func init() {
 	rootCmd.PersistentFlags().StringVarP(&outputPath, "output-path", "o", "", "Path to output")
 
 	// Commands for scaffolding
-	rootCmd.AddCommand(tutCmd, appCmd)
+	rootCmd.AddCommand(tutCmd, appCmd, moduleCmd)
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.

@@ -11,8 +11,9 @@ import (
 // Give this the name of the tutorial and any arguments necessary for
 // said tutorial
 func scaffold(name string, op string, args UserRepoArgs) error {
+
 	// Fetch the scaffold files for the tutorial
-	files := tutorialFiles(name)
+	files := files(name)
 	// Create the necessary folders for the files
 	err := createUniqueFolders(files, op, args)
 	if err != nil {
@@ -29,7 +30,7 @@ func scaffold(name string, op string, args UserRepoArgs) error {
 }
 
 // Get all the files from the tutorial
-func tutorialFiles(name string) (out []string) {
+func files(name string) (out []string) {
 	for _, n := range AssetNames() {
 		if filepath.HasPrefix(n, name) {
 			out = append(out, n)
@@ -53,7 +54,10 @@ func replaceDir(oldPath string, args UserRepoArgs) string {
 	dir := args.Dir
 	nameLowerCase := args.NameLowerCase
 	repo := args.Repo
-	newPath := strings.Replace(oldPath, dir, nameLowerCase, -1)
+	newPath := strings.Replace(oldPath, dir, nameLowerCase, 1)
+	if dir == "module" {
+		return newPath
+	}
 	return strings.Replace(newPath, nameLowerCase, repo, 1)
 }
 
