@@ -1,6 +1,11 @@
 # Cosmos Scaffold
 
-This is a scaffolding tool for CosmosSDK based applications. To build the binary, have v1.13 [golang installed](https://golang.org/doc/install) and then run:
+Requirements:
+go: 1.13+
+
+# This is a scaffolding tool for CosmosSDK based applications. To build the binary, have [golang installed](https://golang.org/doc/install) and then just run:
+
+This is a scaffolding tool for CosmosSDK based applications. To build the binary, have [golang installed](https://golang.org/doc/install) and then just run:
 
 ```bash
 make
@@ -12,9 +17,26 @@ Then the binary should be installed in your `$GOBIN` so you can then run:
 scaffold --help
 ```
 
+## Tutorials
+
+To scaffold out the `nameservice` tutorial example just run the following:
+
+```bash
+scaffold tutorial nameservice myghusername myrepo "Blockchain Name"
+```
+
+Then just `cd` into the `myrepo` folder and:
+
+```bash
+go mod tidy
+make install
+nscli --help
+nsd --help
+```
+
 ## App
 
-To scaffold out a ready to go app run the following:
+To scaffold out a ready to go general-purpose app run the following:
 
 ```bash
 scaffold app [lvl-1] myghusername myrepo
@@ -31,22 +53,19 @@ There is no need to make a directory this will happen with the command.
 After you have chosen your level and created your app, you will need to `cd` into the directory then run
 `go get ./...` and then you will be able to run `make install`
 
-## Tutorial
+## Module
 
-To scaffold out the `nameservice` tutorial example run the following:
+To scaffold out a empty module:
 
-```bash
-scaffold tutorial nameservice myghusername myrepo "Blockchain Name"
-```
-
-Then just `cd` into the `myrepo` folder and:
+- First: `cd` into your modules directory, if you used the scaffold tool to generate your app this will be you `/x` folder
+- Second: run the command listed below:
 
 ```bash
-go mod tidy
-make install
-nscli --help
-nsd --help
+scaffold module <user/Github org> <repoName> <moduleName>
 ```
+
+This will get you started with writing a module.
+The layout of the files follow the module spec, located [here](https://github.com/cosmos/cosmos-sdk/blob/0992c2994ca15131712ab19369f558190434f231/docs/building-modules/structure.md).
 
 ## Versioning
 
