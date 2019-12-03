@@ -33,7 +33,7 @@ var (
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "scaffold",
-	Short: "Aids in scaffolding out CosmosSDK based applications",
+	Short: "This CLI helps in scaffolding out CosmosSDK based applications",
 }
 
 // UserRepoArgs contain arguments for scaffolding

@@ -46,7 +46,7 @@ var tutCmd = &cobra.Command{
 // moduleCmd
 var moduleCmd = &cobra.Command{
 	Use:   "module [user] [repo] [moduleName]",
-	Short: "Generate a empty module for use in the Cosmos-SDK",
+	Short: "Generate an empty module for use in the Cosmos-SDK",
 	Args:  cobra.ExactArgs(3),
 	Run: func(cmd *cobra.Command, args []string) {
 		nameRaw := args[2]
@@ -73,7 +73,7 @@ var moduleCmd = &cobra.Command{
 // appCmd enables scaffolding of different levels of apps
 var appCmd = &cobra.Command{
 	Use:   "app [lvl] [user] [repo]",
-	Short: "Generates a ",
+	Short: "Generates an empty application boilerplate",
 	Args:  cobra.ExactArgs(3),
 	Run: func(cmd *cobra.Command, args []string) {
 		ns := UserRepoArgs{
