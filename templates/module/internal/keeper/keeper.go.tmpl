@@ -35,7 +35,7 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
 }
 
-// GetPubkey returns the pubkey from the adddress-pubkey relation
+// Get returns the pubkey from the adddress-pubkey relation
 func (k Keeper) Get(ctx sdk.Context, key string) (/* TODO: Fill out this type */, error) {
 	store := ctx.KVStore(k.storeKey)
 	var item /* TODO: Fill out this type */
