@@ -41,6 +41,8 @@ type UserRepoArgs struct {
 	Dir                  string `json:"dir"`
 	User                 string `json:"user"`
 	Repo                 string `json:"repo"`
+	CloneUser            string `json:"cloneUser"`
+	CloneRepo            string `json:"cloneRepo"`
 	NameRaw              string `json:"nameRaw"`
 	NameLowerCase        string `json:"nameLowerCase"`
 	NameCapitalCamelCase string `json:"nameCapitalCamelCase"`
@@ -68,7 +70,7 @@ func init() {
 	rootCmd.PersistentFlags().StringVarP(&outputPath, "output-path", "o", "", "Path to output")
 
 	// Commands for scaffolding
-	rootCmd.AddCommand(tutCmd, appCmd, moduleCmd)
+	rootCmd.AddCommand(tutCmd, appCmd, moduleCmd, cloneCmd)
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
