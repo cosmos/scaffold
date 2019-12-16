@@ -22,6 +22,8 @@ install: generate mod
 lint:
 	@echo "--> Running linter"
 	@golangci-lint run
-	go mod verify
+
+test: 
+	go test ./... -v
 
 .PHONY: all tools generate build install
