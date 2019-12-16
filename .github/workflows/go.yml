@@ -11,13 +11,16 @@ jobs:
           go-version: 1.13
         id: go
 
-      - name: Check out code into the Go module directory
-        uses: actions/checkout@v1
-
         # This is used since the above action does not set it for now
         #  Remove once https://github.com/actions/setup-go/issues/27 is fixed
-      - name: Set GOBIN
-        run: export PATH=$PATH:$GOPATH/bin
+      - name: setup env
+        run: |
+          echo "::set-env name=GOPATH::$(go env GOPATH)"
+          echo "::add-path::$(go env GOPATH)/bin"
+        shell: bash
+
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v1
 
       - name: Tools
         run: make tools
