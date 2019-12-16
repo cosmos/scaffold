@@ -24,6 +24,7 @@ lint:
 	@golangci-lint run
 
 test: 
-	go test ./... -v
+	@echo "--> Running Tests"
+	@go test ./... -v
 
-.PHONY: all tools generate build install
+.PHONY: all tools generate build install test
