@@ -16,7 +16,7 @@ jobs:
 
       - name: Build
         run: |
-          go get ./...
+          make build
           make install
 
       - name: Test
