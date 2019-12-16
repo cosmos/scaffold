@@ -258,21 +258,6 @@ func NewInitApp(
 		}
 	}
 
-	// create the simulation manager and define the order of the modules for deterministic simulations
-	//
-	// NOTE: This is not required for apps that don't use the simulator for fuzz testing
-	// transactions.
-	app.sm = module.NewSimulationManager(
-		auth.NewAppModule(app.accountKeeper),
-		bank.NewAppModule(app.bankKeeper, app.accountKeeper),
-		supply.NewAppModule(app.supplyKeeper, app.accountKeeper),
-		distr.NewAppModule(app.distrKeeper, app.accountKeeper, app.supplyKeeper, app.stakingKeeper),
-		staking.NewAppModule(app.stakingKeeper, app.accountKeeper, app.supplyKeeper),
-		slashing.NewAppModule(app.slashingKeeper, app.accountKeeper, app.stakingKeeper),
-	)
-
-	app.sm.RegisterStoreDecoders()
-
 	return app
 }
 
