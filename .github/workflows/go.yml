@@ -16,5 +16,6 @@ jobs:
 
       - name: Test
         run: |
-          go build -mod=readonly -o build/scaffold main.go
+          make tools
+          make build
           make test
