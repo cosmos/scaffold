@@ -80,10 +80,20 @@ var appCmd = &cobra.Command{
 	Short: "Generates an empty application boilerplate",
 	Args:  cobra.ExactArgs(3),
 	Run: func(cmd *cobra.Command, args []string) {
+		nameRaw := args[2]
+
+		nameCapitalCamelCase := strcase.ToCamel(nameRaw)
+		nameLowerCamelCase := strcase.ToLowerCamel(nameRaw)
+		nameLowerCase := strings.ToLower(nameRaw)
+
 		ns := UserRepoArgs{
-			Dir:  args[0],
-			User: args[1],
-			Repo: args[2],
+			Dir:                  args[0],
+			User:                 args[1],
+			Repo:                 args[2],
+			NameRaw:              nameRaw,
+			NameCapitalCamelCase: nameCapitalCamelCase,
+			NameLowerCamelCase:   nameLowerCamelCase,
+			NameLowerCase:        nameLowerCase,
 		}
 		err := scaffold(args[0], outputPath, ns)
 		if err != nil {
