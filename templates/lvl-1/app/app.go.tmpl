@@ -1,6 +1,7 @@
 package app
 
 import (
+	"encoding/json"
 	"io"
 	"os"
 
@@ -28,12 +29,14 @@ import (
 const appName = "app"
 
 var (
-	// default home directories for the application CLI
 	// TODO: rename your cli
+
+	// DefaultCLIHome default home directories for the application CLI
 	DefaultCLIHome = os.ExpandEnv("$HOME/.acli")
 
-	// DefaultNodeHome sets the folder where the applcation data and configuration will be stored
 	// TODO: rename your daemon
+
+	// DefaultNodeHome sets the folder where the applcation data and configuration will be stored
 	DefaultNodeHome = os.ExpandEnv("$HOME/.aud")
 
 	// ModuleBasics The module BasicManager is in charge of setting up basic,
@@ -70,8 +73,8 @@ func MakeCodec() *codec.Codec {
 	return cdc.Seal()
 }
 
-// newApp extended ABCI application
-type newApp struct {
+// NewApp extended ABCI application
+type NewApp struct {
 	*bam.BaseApp
 	cdc *codec.Codec
 
@@ -99,7 +102,7 @@ type newApp struct {
 func NewInitApp(
 	logger log.Logger, db dbm.DB, traceStore io.Writer, loadLatest bool,
 	invCheckPeriod uint, baseAppOptions ...func(*bam.BaseApp),
-) *newApp {
+) *NewApp {
 	// First define the top level codec that will be shared by the different modules
 	cdc := MakeCodec()
 
@@ -115,7 +118,7 @@ func NewInitApp(
 	tKeys := sdk.NewTransientStoreKeys(staking.TStoreKey, params.TStoreKey)
 
 	// Here you initialize your application with the store keys it requires
-	var app = &newApp{
+	var app = &NewApp{
 		BaseApp:        bApp,
 		cdc:            cdc,
 		invCheckPeriod: invCheckPeriod,
@@ -282,7 +285,7 @@ func NewDefaultGenesisState() GenesisState {
 }
 
 // InitChainer application update at chain initialization
-func (app *newApp) InitChainer(ctx sdk.Context, req abci.RequestInitChain) abci.ResponseInitChain {
+func (app *NewApp) InitChainer(ctx sdk.Context, req abci.RequestInitChain) abci.ResponseInitChain {
 	var genesisState simapp.GenesisState
 
 	app.cdc.MustUnmarshalJSON(req.AppStateBytes, &genesisState)
@@ -291,20 +294,20 @@ func (app *newApp) InitChainer(ctx sdk.Context, req abci.RequestInitChain) abci.
 }
 
 // BeginBlocker application updates every begin block
-func (app *newApp) BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock) abci.ResponseBeginBlock {
+func (app *NewApp) BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock) abci.ResponseBeginBlock {
 	return app.mm.BeginBlock(ctx, req)
 }
 // EndBlocker application updates every end block
-func (app *newApp) EndBlocker(ctx sdk.Context, req abci.RequestEndBlock) abci.ResponseEndBlock {
+func (app *NewApp) EndBlocker(ctx sdk.Context, req abci.RequestEndBlock) abci.ResponseEndBlock {
 	return app.mm.EndBlock(ctx, req)
 }
 // LoadHeight loads a particular height
-func (app *newApp) LoadHeight(height int64) error {
+func (app *NewApp) LoadHeight(height int64) error {
 	return app.LoadVersion(height, app.keys[bam.MainStoreKey])
 }
 
 // ModuleAccountAddrs returns all the app's module account addresses.
-func (app *newApp) ModuleAccountAddrs() map[string]bool {
+func (app *NewApp) ModuleAccountAddrs() map[string]bool {
 	modAccAddrs := make(map[string]bool)
 	for acc := range maccPerms {
 		modAccAddrs[supply.NewModuleAddress(acc).String()] = true
@@ -314,7 +317,7 @@ func (app *newApp) ModuleAccountAddrs() map[string]bool {
 }
 
 // Codec returns the application's sealed codec.
-func (app *newApp) Codec() *codec.Codec {
+func (app *NewApp) Codec() *codec.Codec {
 	return app.cdc
 }
 
