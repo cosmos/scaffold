@@ -17,7 +17,7 @@ jobs:
         # This is used since the above action does not set it for now
         #  Remove once https://github.com/actions/setup-go/issues/27 is fixed
       - name: Set GOBIN
-        run: export PATH=${PATH}:`go env GOPATH`/bin
+        run: export PATH=$PATH:$GOPATH/bin
 
       - name: Tools
         run: make tools
