@@ -28,6 +28,6 @@ nsd init <moniker>
 nscli keys add validator
 nsd add-genesis-account validator 100000000stake
 nsd gentx --name validator
-nsd collect-gentx
+nsd collect-gentxs
 nsd start
 ```
