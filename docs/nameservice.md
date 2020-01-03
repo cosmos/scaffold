@@ -27,7 +27,7 @@ Once you have done that run the following commands to start a local development 
 nsd init <moniker>
 nscli keys add validator
 nsd add-genesis-account validator 100000000stake
-nsd gentx --name valdiator
-nsd collect-gentx
+nsd gentx --name validator
+nsd collect-gentxs
 nsd start
 ```
