@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
 // Local code type
@@ -20,5 +19,5 @@ const (
 // TODO: Fill out some custom errors for the module
 // You can see how they are constructed below:
 // func ErrInvalid(codespace sdk.CodespaceType) sdk.Error {
-// 	return sdkerrors(codespace, CodeInvalid, "custom error message")
+// 	return sdk.NewError(codespace, CodeInvalid, "custom error message")
 // }
