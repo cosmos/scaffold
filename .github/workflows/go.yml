@@ -1,0 +1,32 @@
+name: Go
+on: [pull_request]
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Go 1.13
+        uses: actions/setup-go@v1
+        with:
+          go-version: 1.13
+        id: go
+
+        # This is used since the above action does not set it for now
+        #  Remove once https://github.com/actions/setup-go/issues/27 is fixed
+      - name: setup env
+        run: |
+          echo "::set-env name=GOPATH::$(go env GOPATH)"
+          echo "::add-path::$(go env GOPATH)/bin"
+        shell: bash
+
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v1
+
+      - name: Tools
+        run: make tools
+
+      - name: Build
+        run: make build
+
+      - name: Test
+        run: make test
