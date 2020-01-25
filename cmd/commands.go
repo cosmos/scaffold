@@ -47,6 +47,25 @@ var tutCmd = &cobra.Command{
 	},
 }
 
+var cloneCmd = &cobra.Command{
+	Use:   "clone [cloneUser] [cloneRepo] [user] [repo]",
+	Short: "clone an SDK app and make your own",
+	Args:  cobra.ExactArgs(4),
+	Run: func(cmd *cobra.Command, args []string) {
+		cln := UserRepoArgs{
+			CloneUser: args[0],
+			CloneRepo: args[1],
+			User:      args[2],
+			Repo:      args[3],
+		}
+		err := clone(cln)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+	},
+}
+
 // moduleCmd
 var moduleCmd = &cobra.Command{
 	Use:   "module [user] [repo] [moduleName]",

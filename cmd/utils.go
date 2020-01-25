@@ -1,12 +1,98 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
+	"io/ioutil"
+	"log"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 	"text/template"
 )
+
+// clones an sdk repository and replaces the username and repo name with options from UserRepoArgs
+func clone(args UserRepoArgs) error {
+	tmp, err := ioutil.TempDir("", "scaffold-clone-")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer os.RemoveAll(tmp) // clean up
+
+	cmd := exec.Command("git", "clone", "git@github.com:"+args.CloneUser+"/"+args.CloneRepo, tmp)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	err = cmd.Run()
+	if err != nil {
+		return err
+	}
+
+	cmd = exec.Command("rm", "-rf", tmp+"/.git")
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	err = cmd.Run()
+	if err != nil {
+		return err
+	}
+
+	err = filepath.Walk(tmp, visit(args.CloneUser+"/"+args.CloneRepo, args.User+"/"+args.Repo))
+	if err != nil {
+		return (err)
+	}
+	err = filepath.Walk(tmp, visit("\\/"+args.CloneUser+"\\/"+args.CloneRepo+"/", "\\/"+args.User+"\\/"+args.Repo+"/"))
+	if err != nil {
+		return (err)
+	}
+
+	cwd, err := os.Getwd()
+	if err != nil {
+		return (err)
+	}
+
+	newdir := cwd + "/" + args.Repo
+
+	if _, err := os.Stat(newdir); os.IsNotExist(err) {
+		err := os.Rename(tmp, newdir)
+		if err != nil {
+			return (err)
+		}
+	} else {
+		return errors.New("Folder " + newdir + " already exists")
+	}
+
+	if err != nil {
+		return (err)
+	}
+	return nil
+}
+func visit(search, replace string) filepath.WalkFunc {
+	return func(path string, fi os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if !!fi.IsDir() {
+			return nil
+		}
+		matched, err := filepath.Match("*", fi.Name())
+		if err != nil {
+			panic(err)
+			return err
+		}
+		if matched {
+			read, err := ioutil.ReadFile(path)
+			if err != nil {
+				panic(err)
+			}
+			newContents := strings.Replace(string(read), search, replace, -1)
+			err = ioutil.WriteFile(path, []byte(newContents), 0)
+			if err != nil {
+				panic(err)
+			}
+		}
+		return nil
+	}
+}
 
 // Give this the name of the tutorial and any arguments necessary for
 // said tutorial
