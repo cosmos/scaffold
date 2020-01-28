@@ -17,7 +17,6 @@ jobs:
       shell: bash
     - uses: actions/checkout@v2
     - name: Test Build
-      uses: nickhstr/action-setup-golangci-lint@v0.1.0
       run: |
         make
         scaffold app lvl-1 marbar3778 nameservice && cd nameservice/x && scaffold module marbar3778 nameservice nameservice
