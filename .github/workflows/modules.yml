@@ -19,8 +19,10 @@ jobs:
     - name: Build
       run: |
         make
+        cd ..
         scaffold app lvl-1 marbar3778 nameservice && cd nameservice/x && scaffold module marbar3778 nameservice nameservice
         cd ..
+        ls
     - name: Test Lint
       uses: actions-contrib/golangci-lint@master
       env:
