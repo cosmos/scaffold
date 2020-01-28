@@ -8,45 +8,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// tutCmd represents the tutorial generator, either nameservice or hellochain can be created
-var tutCmd = &cobra.Command{
-	Use:   "tutorial [tutorial-name] [user] [repo] [name]",
-	Short: "Generates one of the tutorial apps, currently either the 'nameservice' or 'hellochain'",
-	Args:  cobra.MinimumNArgs(3),
-	Run: func(cmd *cobra.Command, args []string) {
-		nameRaw := ""
-		dir := args[0]
-
-		if len(args) == 4 {
-			nameRaw = args[3]
-		}
-
-		if nameRaw == "" {
-			nameRaw = dir
-		}
-		nameCapitalCamelCase := strcase.ToCamel(nameRaw)
-		nameLowerCamelCase := strcase.ToLowerCamel(nameRaw)
-		nameLowerCase := strings.ToLower(nameLowerCamelCase)
-
-		ns := UserRepoArgs{
-			Dir:                  dir,
-			User:                 args[1],
-			Repo:                 args[2],
-			NameRaw:              nameRaw,
-			NameLowerCase:        nameLowerCase,
-			NameCapitalCamelCase: nameCapitalCamelCase,
-			NameLowerCamelCase:   nameLowerCamelCase,
-		}
-		if dir == "hellochain" || dir == "nameservice" {
-			err := scaffold(dir, outputPath, ns)
-			if err != nil {
-				fmt.Println(err)
-				return
-			}
-		}
-	},
-}
-
 // moduleCmd
 var moduleCmd = &cobra.Command{
 	Use:   "module [user] [repo] [moduleName]",

@@ -26,7 +26,6 @@ Available Commands:
   app         Generates an an empty application boilerplate 
   help        Help about any command
   module      Generate an empty module for use in the Cosmos-SDK
-  tutorial    Generates one of the tutorial apps, currently either the 'nameservice' or 'hellochain'
 
 Flags:
   -c, --config string        config file (default is $HOME/.scaffold.yaml)
@@ -37,6 +36,5 @@ Flags:
 Use "scaffold [command] --help" for more information about a command.
 ```
 
-- [Usage information about `tutorial`](./docs/tutorial.md)
 - [Usage information about `app`](./docs/app.md)
 - [Usage information about `module`](./docs/module.md)

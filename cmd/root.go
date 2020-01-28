@@ -68,7 +68,7 @@ func init() {
 	rootCmd.PersistentFlags().StringVarP(&outputPath, "output-path", "o", "", "Path to output")
 
 	// Commands for scaffolding
-	rootCmd.AddCommand(tutCmd, appCmd, moduleCmd)
+	rootCmd.AddCommand(appCmd, moduleCmd)
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
