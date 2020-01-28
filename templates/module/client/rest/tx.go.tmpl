@@ -14,12 +14,13 @@ import (
 )
 
 func registerTxRoutes(cliCtx context.CLIContext, r *mux.Router) {
-	r.HandleFunc(
-		// TODO: Define the Rest route ,
-		// Call the function which should be executed for this route),
-	).Methods("POST")
+	// r.HandleFunc(
+	// TODO: Define the Rest route ,
+	// Call the function which should be executed for this route),
+	// ).Methods("POST")
 }
 
+/*
 // Action TX body
 type <Action>Req struct {
 	BaseReq rest.BaseReq `json:"base_req" yaml:"base_req"`
@@ -41,3 +42,4 @@ func <Action>RequestHandlerFn(cliCtx context.CLIContext) http.HandlerFunc {
 		utils.WriteGenerateStdTxResponse(w, cliCtx, BaseReq, []sdk.Msg{msg})
 	}
 }
+*/

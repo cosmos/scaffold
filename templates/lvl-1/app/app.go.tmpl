@@ -111,6 +111,10 @@ type NewApp struct {
 // verify app interface at compile time
 var _ simapp.App = (*NewApp)(nil)
 
+// New{{.Repo}}App is a constructor function for {{.Repo}}App
+func NewInitApp(logger log.Logger, db dbm.DB, traceStore io.Writer, loadLatest bool,
+	invCheckPeriod uint, baseAppOptions ...func(*bam.BaseApp)) *newApp {
+
 // NewInitApp returns a reference to an initialized InitApp.
 func NewInitApp(
 	logger log.Logger, db dbm.DB, traceStore io.Writer, loadLatest bool,
