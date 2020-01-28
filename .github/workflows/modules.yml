@@ -16,11 +16,12 @@ jobs:
         echo "::set-env name=GO111MODULE::"on""
       shell: bash
     - uses: actions/checkout@v2
-    - name: Test Build
+    - name: Build
       run: |
         make
         scaffold app lvl-1 marbar3778 nameservice && cd nameservice/x && scaffold module marbar3778 nameservice nameservice
         cd ..
+    - name: Test Lint
       uses: actions-contrib/golangci-lint@master
       env:
         GOROOT: ""
