@@ -6,8 +6,8 @@ import (
 	"os"
 
 	abci "github.com/tendermint/tendermint/abci/types"
-	cmn "github.com/tendermint/tendermint/libs/common"
 	"github.com/tendermint/tendermint/libs/log"
+	tmos "github.com/tendermint/tendermint/libs/os"
 	dbm "github.com/tendermint/tm-db"
 
 	bam "github.com/cosmos/cosmos-sdk/baseapp"
@@ -17,6 +17,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/cosmos/cosmos-sdk/version"
 	"github.com/cosmos/cosmos-sdk/x/auth"
+	"github.com/cosmos/cosmos-sdk/x/auth/vesting"
 	"github.com/cosmos/cosmos-sdk/x/bank"
 	distr "github.com/cosmos/cosmos-sdk/x/distribution"
 	"github.com/cosmos/cosmos-sdk/x/genutil"
@@ -67,9 +68,12 @@ var (
 // returned.
 func MakeCodec() *codec.Codec {
 	var cdc = codec.New()
+
 	ModuleBasics.RegisterCodec(cdc)
+	vesting.RegisterCodec(cdc)
 	sdk.RegisterCodec(cdc)
 	codec.RegisterCrypto(cdc)
+
 	return cdc.Seal()
 }
 
@@ -84,6 +88,9 @@ type NewApp struct {
 	keys  map[string]*sdk.KVStoreKey
 	tKeys map[string]*sdk.TransientStoreKey
 
+	// subspaces
+	subspaces map[string]params.Subspace
+
 	// keepers
 	accountKeeper  auth.AccountKeeper
 	bankKeeper     bank.Keeper
@@ -96,7 +103,13 @@ type NewApp struct {
 
 	// Module Manager
 	mm *module.Manager
+
+	// simulation manager
+	sm *module.SimulationManager
 }
+
+// verify app interface at compile time
+var _ simapp.App = (*NewApp)(nil)
 
 // NewInitApp returns a reference to an initialized InitApp.
 func NewInitApp(
@@ -124,30 +137,30 @@ func NewInitApp(
 		invCheckPeriod: invCheckPeriod,
 		keys:           keys,
 		tKeys:          tKeys,
+		subspaces:      make(map[string]params.Subspace),
 	}
 
 	// The ParamsKeeper handles parameter storage for the application
-	app.paramsKeeper = params.NewKeeper(app.cdc, keys[params.StoreKey], tKeys[params.TStoreKey], params.DefaultCodespace)
+	app.paramsKeeper = params.NewKeeper(app.cdc, keys[params.StoreKey], tKeys[params.TStoreKey])
 	// Set specific supspaces
-	authSubspace := app.paramsKeeper.Subspace(auth.DefaultParamspace)
-	bankSubspace := app.paramsKeeper.Subspace(bank.DefaultParamspace)
-	stakingSubspace := app.paramsKeeper.Subspace(staking.DefaultParamspace)
-	distrSubspace := app.paramsKeeper.Subspace(distr.DefaultParamspace)
-	slashingSubspace := app.paramsKeeper.Subspace(slashing.DefaultParamspace)
+	app.subspaces[auth.ModuleName] = app.paramsKeeper.Subspace(auth.DefaultParamspace)
+	app.subspaces[bank.ModuleName] = app.paramsKeeper.Subspace(bank.DefaultParamspace)
+	app.subspaces[staking.ModuleName] = app.paramsKeeper.Subspace(staking.DefaultParamspace)
+	app.subspaces[distr.ModuleName] = app.paramsKeeper.Subspace(distr.DefaultParamspace)
+	app.subspaces[slashing.ModuleName] = app.paramsKeeper.Subspace(slashing.DefaultParamspace)
 
 	// The AccountKeeper handles address -> account lookups
 	app.accountKeeper = auth.NewAccountKeeper(
 		app.cdc,
 		keys[auth.StoreKey],
-		authSubspace,
+		app.subspaces[auth.ModuleName],
 		auth.ProtoBaseAccount,
 	)
 
 	// The BankKeeper allows you perform sdk.Coins interactions
 	app.bankKeeper = bank.NewBaseKeeper(
 		app.accountKeeper,
-		bankSubspace,
-		bank.DefaultCodespace,
+		app.subspaces[bank.ModuleName],
 		app.ModuleAccountAddrs(),
 	)
 
@@ -165,16 +178,15 @@ func NewInitApp(
 		app.cdc,
 		keys[staking.StoreKey],
 		app.supplyKeeper,
-		stakingSubspace,
-		staking.DefaultCodespace,
+		app.subspaces[staking.ModuleName],
 	)
+
 	app.distrKeeper = distr.NewKeeper(
 		app.cdc,
 		keys[distr.StoreKey],
-		distrSubspace,
+		app.subspaces[distr.ModuleName],
 		&stakingKeeper,
 		app.supplyKeeper,
-		distr.DefaultCodespace,
 		auth.FeeCollectorName,
 		app.ModuleAccountAddrs(),
 	)
@@ -183,8 +195,7 @@ func NewInitApp(
 		app.cdc,
 		keys[slashing.StoreKey],
 		&stakingKeeper,
-		slashingSubspace,
-		slashing.DefaultCodespace,
+		app.subspaces[slashing.ModuleName],
 	)
 
 	// register the staking hooks
@@ -196,7 +207,6 @@ func NewInitApp(
 	)
 
 	// TODO: Add your module(s) keepers
-
 
 	// NOTE: Any module instantiated in the module manager that is later modified
 	// must be passed by reference here.
@@ -254,7 +264,7 @@ func NewInitApp(
 	if loadLatest {
 		err := app.LoadLatestVersion(app.keys[bam.MainStoreKey])
 		if err != nil {
-			cmn.Exit(err.Error())
+			tmos.Exit(err.Error())
 		}
 	}
 
@@ -282,10 +292,12 @@ func (app *NewApp) InitChainer(ctx sdk.Context, req abci.RequestInitChain) abci.
 func (app *NewApp) BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock) abci.ResponseBeginBlock {
 	return app.mm.BeginBlock(ctx, req)
 }
+
 // EndBlocker application updates every end block
 func (app *NewApp) EndBlocker(ctx sdk.Context, req abci.RequestEndBlock) abci.ResponseEndBlock {
 	return app.mm.EndBlock(ctx, req)
 }
+
 // LoadHeight loads a particular height
 func (app *NewApp) LoadHeight(height int64) error {
 	return app.LoadVersion(height, app.keys[bam.MainStoreKey])
@@ -304,6 +316,11 @@ func (app *NewApp) ModuleAccountAddrs() map[string]bool {
 // Codec returns the application's sealed codec.
 func (app *NewApp) Codec() *codec.Codec {
 	return app.cdc
+}
+
+// SimulationManager implements the SimulationApp interface
+func (app *NewApp) SimulationManager() *module.SimulationManager {
+	return app.sm
 }
 
 // GetMaccPerms returns a mapping of the application's module account permissions.
