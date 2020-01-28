@@ -18,4 +18,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: Test Build
       run: |
-        cd nameservice && make install
+        make
+        scaffold app lvl-1 marbar3778 nameservice && cd nameservice
+        go get ./...
+        make install
