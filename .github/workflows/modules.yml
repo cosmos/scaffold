@@ -21,6 +21,6 @@ jobs:
         make
         scaffold app lvl-1 marbar3778 nameservice && cd nameservice/x && scaffold module marbar3778 nameservice nameservice
         cd ..
-    - uses: Mushus/golangci-linter@v1
+    - uses: docker://matoous/golangci-lint-action:v1.1.0
       with:
         config: .golangci.yml
