@@ -2,6 +2,7 @@ package types
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
 // TODO: Describe your actions, these will implment the interface of `sdk.Msg`
@@ -37,9 +38,9 @@ func (msg Msg<Action>) GetSignBytes() []byte {
 }
 
 ValidateBasic validity check for the AnteHandler
-func (msg Msg<Action>) ValidateBasic() sdk.Error {
+func (msg Msg<Action>) ValidateBasic() error {
 	if msg.ValidatorAddr.Empty() {
-		return ErrBadValidatorAddr(DefaultCodespace)
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "missing validator address"
 	}
 	return nil
 }
