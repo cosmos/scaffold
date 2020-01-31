@@ -17,3 +17,4 @@ Global Flags:
 The following starter applications are available:
 
 - [`lvl-1`](./lvl-1.md) -  Auth, Bank, Distribution, Genutil, Genaccounts, Params, Slashing, Staking, Supply
+- [`lvl-max`](./lvl-max.md) -  Auth, Bank, Crisis, Distribution, Evidence, Genutil, Genaccounts, Gov, Mint, Params, Slashing, Staking, Supply, Upgrade
