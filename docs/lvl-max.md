@@ -25,3 +25,7 @@ aud gentx --name validator
 aud collect-gentxs
 aud start
 ```
+
+## Contribution
+
+Contributed by [Kimura Yu](https://github.com/KimuraYu45z) , [LCNEM, Inc.](https://github.com/lcnem)
