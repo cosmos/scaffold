@@ -257,7 +257,7 @@ func NewInitApp(
   app.stakingKeeper = *stakingKeeper.SetHooks(
     staking.NewMultiStakingHooks(
       app.distrKeeper.Hooks(),
-      app.slashingKeeper.Hooks()
+      app.slashingKeeper.Hooks(),
     ),
   )
 
