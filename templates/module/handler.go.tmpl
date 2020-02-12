@@ -5,7 +5,6 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"github.com/{{ .User }}/{{ .Repo }}/x/{{ .NameLowerCase }}/internal/types"
 )
 
 // NewHandler creates an sdk.Handler for all the {{ .NameLowerCase }} type messages
@@ -16,18 +15,17 @@ func NewHandler(k Keeper) sdk.Handler {
 		// TODO: Define your msg cases
 		// 
 		//Example:
-		// case MsgSet<Action>:
-		// 	return handleMsg<Action>(ctx, keeper, msg)
+		// case Msg<Action>:
+		// 	return handleMsg<Action>(ctx, k, msg)
 		default:
-			errMsg := fmt.Sprintf("unrecognized %s message type: %T", types.ModuleName,  msg)
+			errMsg := fmt.Sprintf("unrecognized %s message type: %T", ModuleName,  msg)
 			return nil, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, errMsg)
 		}
 	}
 }
 
 // handde<Action> does x
-func handleMsg<Action>(ctx sdk.Context, msg MsgType, k Keeper) (*sdk.Result, error) {
-
+func handleMsg<Action>(ctx sdk.Context, k Keeper, msg Msg<Action>) (*sdk.Result, error) {
 	err := k.<Action>(ctx, msg.ValidatorAddr)
 	if err != nil {
 		return nil, err
@@ -37,7 +35,7 @@ func handleMsg<Action>(ctx sdk.Context, msg MsgType, k Keeper) (*sdk.Result, err
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(
 			sdk.EventTypeMessage,
-			sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
+			sdk.NewAttribute(sdk.AttributeKeyModule, AttributeValueCategory),
 			sdk.NewAttribute(sdk.AttributeKeySender, msg.ValidatorAddr.String()),
 		),
 	)

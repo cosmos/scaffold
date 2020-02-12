@@ -14,7 +14,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/{{ .User }}/{{ .Repo }}/x/{{ .NameLowerCase }}/client/cli"
 	"github.com/{{ .User }}/{{ .Repo }}/x/{{ .NameLowerCase }}/client/rest"
-	"github.com/{{ .User }}/{{ .Repo }}/x/{{ .NameLowerCase }}/internal/types"
 )
 
 var (
@@ -29,7 +28,7 @@ var _ module.AppModuleBasic = AppModuleBasic{}
 
 // Name returns the {{ .NameLowerCase }} module's name.
 func (AppModuleBasic) Name() string {
-	return types.ModuleName
+	return ModuleName
 }
 
 // RegisterCodec registers the {{ .NameLowerCase }} module's types for the given codec.
@@ -120,7 +119,7 @@ func (am AppModule) NewQuerierHandler() sdk.Querier {
 func (am AppModule) InitGenesis(ctx sdk.Context, data json.RawMessage) []abci.ValidatorUpdate {
 	var genesisState GenesisState
 	ModuleCdc.MustUnmarshalJSON(data, &genesisState)
-	InitGenesis(ctx, am.keeper, am.stakingKeeper, genesisState)
+	InitGenesis(ctx, am.keeper, genesisState)
 	return []abci.ValidatorUpdate{}
 }
 
