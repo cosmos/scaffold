@@ -284,11 +284,10 @@ func NewInitApp(
     mint.NewAppModule(app.mintKeeper),
     slashing.NewAppModule(app.slashingKeeper, app.accountKeeper, app.stakingKeeper),
     distr.NewAppModule(app.distrKeeper, app.accountKeeper, app.supplyKeeper, app.stakingKeeper),
+    // TODO: Add your module(s)
     staking.NewAppModule(app.stakingKeeper, app.accountKeeper, app.supplyKeeper),
     upgrade.NewAppModule(app.upgradeKeeper),
     evidence.NewAppModule(app.evidenceKeeper),
-    // TODO: Add your module(s)
-    staking.NewAppModule(app.stakingKeeper, app.accountKeeper, app.supplyKeeper),
   )
   // During begin block slashing happens after distr.BeginBlocker so that
   // there is nothing left over in the validator fee pool, so as to keep the
