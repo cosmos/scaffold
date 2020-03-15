@@ -24,7 +24,7 @@ func NewHandler(k Keeper) sdk.Handler {
 	}
 }
 
-// handde<Action> does x
+// handle<Action> does x
 func handleMsg<Action>(ctx sdk.Context, k Keeper, msg Msg<Action>) (*sdk.Result, error) {
 	err := k.<Action>(ctx, msg.ValidatorAddr)
 	if err != nil {
