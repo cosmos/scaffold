@@ -16,6 +16,7 @@ import (
 	"github.com/{{ .User }}/{{ .Repo }}/x/{{ .NameLowerCase }}/client/rest"
 )
 
+// Type check to ensure the interface is properly implemented
 var (
 	_ module.AppModule           = AppModule{}
 	_ module.AppModuleBasic      = AppModuleBasic{}
@@ -23,8 +24,6 @@ var (
 
 // AppModuleBasic defines the basic application module used by the {{ .NameLowerCase }} module.
 type AppModuleBasic struct{}
-
-var _ module.AppModuleBasic = AppModuleBasic{}
 
 // Name returns the {{ .NameLowerCase }} module's name.
 func (AppModuleBasic) Name() string {
