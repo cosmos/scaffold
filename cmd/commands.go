@@ -10,27 +10,32 @@ import (
 
 // moduleCmd
 var moduleCmd = &cobra.Command{
-	Use:   "module [user] [repo] [moduleName]",
+	Use:   "module [lvl] [user] [repo] [moduleName]",
 	Short: "Generate an empty module for use in the Cosmos-SDK",
 	Args:  cobra.ExactArgs(3),
 	Run: func(cmd *cobra.Command, args []string) {
+		dir := "module"
 		nameRaw := args[2]
 
-		// nameCapitalCamelCase := strcase.ToCamel(nameRaw)
-		// nameLowerCamelCase := strcase.ToLowerCamel(nameRaw)
-		nameLowerCase := strings.ToLower(nameRaw)
+		if args[1] == "min" {
+			dir = "min-module"
 
-		mdl := UserRepoArgs{
-			User:          args[0],
-			Repo:          args[1],
-			Dir:           "module",
-			NameRaw:       nameRaw,
-			NameLowerCase: nameLowerCase,
-		}
-		err := scaffold("module", outputPath, mdl)
-		if err != nil {
-			fmt.Println(err)
-			return
+			// nameCapitalCamelCase := strcase.ToCamel(nameRaw)
+			// nameLowerCamelCase := strcase.ToLowerCamel(nameRaw)
+			nameLowerCase := strings.ToLower(nameRaw)
+
+			mdl := UserRepoArgs{
+				User:          args[0],
+				Repo:          args[1],
+				Dir:           dir,
+				NameRaw:       args[2],
+				NameLowerCase: nameLowerCase,
+			}
+			err := scaffold("min-module", outputPath, mdl)
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
 		}
 	},
 }
