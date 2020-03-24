@@ -55,7 +55,8 @@ func replaceDir(oldPath string, args UserRepoArgs) string {
 	nameLowerCase := args.NameLowerCase
 	repo := args.Repo
 	newPath := strings.Replace(oldPath, dir, nameLowerCase, 1)
-	if dir == "module" {
+	// this smells hacky
+	if strings.Contains(dir, "module") {
 		return newPath
 	}
 	newPath = strings.Replace(newPath, dir, nameLowerCase, 1)

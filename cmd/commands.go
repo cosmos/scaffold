@@ -23,7 +23,7 @@ var moduleCmd = &cobra.Command{
 		mdl := UserRepoArgs{
 			User:          args[1],
 			Repo:          args[2],
-			Dir:           args[0],
+			Dir:           "lvl-0/module",
 			NameRaw:       nameRaw,
 			NameLowerCase: nameLowerCase,
 		}
