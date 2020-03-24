@@ -207,6 +207,15 @@ func NewInitApp(
     app.subspaces[staking.ModuleName],
   )
 
+  app.mintKeeper = mint.NewKeeper(
+    app.cdc,
+    keys[mint.StoreKey],
+    app.subspaces[mint.ModuleName],
+    &stakingKeeper,
+    app.supplyKeeper,
+    auth.FeeCollectorName,
+  )
+
   app.distrKeeper = distr.NewKeeper(
     app.cdc,
     keys[distr.StoreKey],
@@ -275,18 +284,17 @@ func NewInitApp(
     mint.NewAppModule(app.mintKeeper),
     slashing.NewAppModule(app.slashingKeeper, app.accountKeeper, app.stakingKeeper),
     distr.NewAppModule(app.distrKeeper, app.accountKeeper, app.supplyKeeper, app.stakingKeeper),
+    // TODO: Add your module(s)
     staking.NewAppModule(app.stakingKeeper, app.accountKeeper, app.supplyKeeper),
     upgrade.NewAppModule(app.upgradeKeeper),
     evidence.NewAppModule(app.evidenceKeeper),
-    // TODO: Add your module(s)
-    staking.NewAppModule(app.stakingKeeper, app.accountKeeper, app.supplyKeeper),
   )
   // During begin block slashing happens after distr.BeginBlocker so that
   // there is nothing left over in the validator fee pool, so as to keep the
   // CanWithdrawInvariant invariant.
 
-  app.mm.SetOrderBeginBlockers(distr.ModuleName, slashing.ModuleName)
-  app.mm.SetOrderEndBlockers(staking.ModuleName)
+  app.mm.SetOrderBeginBlockers(upgrade.ModuleName, mint.ModuleName, distr.ModuleName, slashing.ModuleName)
+  app.mm.SetOrderEndBlockers(crisis.ModuleName, gov.ModuleName, staking.ModuleName)
 
   // Sets the order of Genesis - Order matters, genutil is to always come last
   // NOTE: The genutils module must occur after staking so that pools are
