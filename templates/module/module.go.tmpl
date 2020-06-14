@@ -14,6 +14,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/{{ .User }}/{{ .Repo }}/x/{{ .NameLowerCase }}/client/cli"
 	"github.com/{{ .User }}/{{ .Repo }}/x/{{ .NameLowerCase }}/client/rest"
+	"github.com/{{ .User }}/{{ .Repo }}/x/{{ .NameLowerCase }}/keeper"
 )
 
 // Type check to ensure the interface is properly implemented
@@ -72,12 +73,12 @@ func (AppModuleBasic) GetQueryCmd(cdc *codec.Codec) *cobra.Command {
 type AppModule struct {
 	AppModuleBasic
 
-	keeper        Keeper
+	keeper        keeper.Keeper
 	// TODO: Add keepers that your application depends on
 }
 
 // NewAppModule creates a new AppModule object
-func NewAppModule(k Keeper, /*TODO: Add Keepers that your application depends on*/) AppModule {
+func NewAppModule(k keeper.Keeper, /*TODO: Add Keepers that your application depends on*/) AppModule {
 	return AppModule{
 		AppModuleBasic:      AppModuleBasic{},
 		keeper:              k,
@@ -87,7 +88,7 @@ func NewAppModule(k Keeper, /*TODO: Add Keepers that your application depends on
 
 // Name returns the {{ .NameLowerCase }} module's name.
 func (AppModule) Name() string {
-	return ModuleName
+	return types.ModuleName
 }
 
 // RegisterInvariants registers the {{ .NameLowerCase }} module invariants.
@@ -95,7 +96,7 @@ func (am AppModule) RegisterInvariants(_ sdk.InvariantRegistry) {}
 
 // Route returns the message routing key for the {{ .NameLowerCase }} module.
 func (AppModule) Route() string {
-	return RouterKey
+	return types.RouterKey
 }
 
 // NewHandler returns an sdk.Handler for the {{ .NameLowerCase }} module.
@@ -105,12 +106,12 @@ func (am AppModule) NewHandler() sdk.Handler {
 
 // QuerierRoute returns the {{ .NameLowerCase }} module's querier route name.
 func (AppModule) QuerierRoute() string {
-	return QuerierRoute
+	return types.QuerierRoute
 }
 
 // NewQuerierHandler returns the {{ .NameLowerCase }} module sdk.Querier.
 func (am AppModule) NewQuerierHandler() sdk.Querier {
-	return NewQuerier(am.keeper)
+	return types.NewQuerier(am.keeper)
 }
 
 // InitGenesis performs genesis initialization for the {{ .NameLowerCase }} module. It returns
