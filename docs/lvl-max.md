@@ -11,19 +11,19 @@ Then just `cd` into the repo folder and:
 ```bash
 go mod tidy
 make install
-acli --help
-aud --help
+appcli --help
+appd --help
 ```
 
 Once you have done that run the following commands to start a local development chain:
 
 ```bash
-aud init <moniker>
-acli keys add validator
-aud add-genesis-account validator 100000000stake
-aud gentx --name validator
-aud collect-gentxs
-aud start
+appd init <moniker>
+appcli keys add validator
+appd add-genesis-account validator 100000000stake
+appd gentx --name validator
+appd collect-gentxs
+appd start
 ```
 
 ## Contribution
