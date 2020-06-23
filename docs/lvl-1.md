@@ -1,4 +1,16 @@
 # Level 1
+The Level 1 app includes the following modules:
+
+* Auth
+* Bank
+* Distribution
+* Genutil
+* Genaccounts
+* Params
+* Slashing
+* Staking
+* Supply
+
 
 To scaffold out the `lvl-1` app use the following format:
 
