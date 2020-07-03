@@ -14,6 +14,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/{{ .User }}/{{ .Repo }}/x/{{ .NameLowerCase }}/client/cli"
 	"github.com/{{ .User }}/{{ .Repo }}/x/{{ .NameLowerCase }}/client/rest"
+	"github.com/{{ .User }}/{{ .Repo }}/x/{{ .NameLowerCase }}/keeper"
 )
 
 // Type check to ensure the interface is properly implemented
@@ -32,23 +33,23 @@ func (AppModuleBasic) Name() string {
 
 // RegisterCodec registers the {{ .NameLowerCase }} module's types for the given codec.
 func (AppModuleBasic) RegisterCodec(cdc *codec.Codec) {
-	RegisterCodec(cdc)
+	types.RegisterCodec(cdc)
 }
 
 // DefaultGenesis returns default genesis state as raw bytes for the {{ .NameLowerCase }}
 // module.
 func (AppModuleBasic) DefaultGenesis() json.RawMessage {
-	return ModuleCdc.MustMarshalJSON(DefaultGenesisState())
+	return types.ModuleCdc.MustMarshalJSON(types.DefaultGenesisState())
 }
 
 // ValidateGenesis performs genesis state validation for the {{ .NameLowerCase }} module.
 func (AppModuleBasic) ValidateGenesis(bz json.RawMessage) error {
-	var data GenesisState
-	err := ModuleCdc.UnmarshalJSON(bz, &data)
+	var data types.GenesisState
+	err := types.ModuleCdc.UnmarshalJSON(bz, &data)
 	if err != nil {
 		return err
 	}
-	return ValidateGenesis(data)
+	return types.ValidateGenesis(data)
 }
 
 // RegisterRESTRoutes registers the REST routes for the {{ .NameLowerCase }} module.
@@ -72,12 +73,12 @@ func (AppModuleBasic) GetQueryCmd(cdc *codec.Codec) *cobra.Command {
 type AppModule struct {
 	AppModuleBasic
 
-	keeper        Keeper
+	keeper        keeper.Keeper
 	// TODO: Add keepers that your application depends on
 }
 
 // NewAppModule creates a new AppModule object
-func NewAppModule(k Keeper, /*TODO: Add Keepers that your application depends on*/) AppModule {
+func NewAppModule(k keeper.Keeper, /*TODO: Add Keepers that your application depends on*/) AppModule {
 	return AppModule{
 		AppModuleBasic:      AppModuleBasic{},
 		keeper:              k,
@@ -87,7 +88,7 @@ func NewAppModule(k Keeper, /*TODO: Add Keepers that your application depends on
 
 // Name returns the {{ .NameLowerCase }} module's name.
 func (AppModule) Name() string {
-	return ModuleName
+	return types.ModuleName
 }
 
 // RegisterInvariants registers the {{ .NameLowerCase }} module invariants.
@@ -95,7 +96,7 @@ func (am AppModule) RegisterInvariants(_ sdk.InvariantRegistry) {}
 
 // Route returns the message routing key for the {{ .NameLowerCase }} module.
 func (AppModule) Route() string {
-	return RouterKey
+	return types.RouterKey
 }
 
 // NewHandler returns an sdk.Handler for the {{ .NameLowerCase }} module.
@@ -105,19 +106,19 @@ func (am AppModule) NewHandler() sdk.Handler {
 
 // QuerierRoute returns the {{ .NameLowerCase }} module's querier route name.
 func (AppModule) QuerierRoute() string {
-	return QuerierRoute
+	return types.QuerierRoute
 }
 
 // NewQuerierHandler returns the {{ .NameLowerCase }} module sdk.Querier.
 func (am AppModule) NewQuerierHandler() sdk.Querier {
-	return NewQuerier(am.keeper)
+	return types.NewQuerier(am.keeper)
 }
 
 // InitGenesis performs genesis initialization for the {{ .NameLowerCase }} module. It returns
 // no validator updates.
 func (am AppModule) InitGenesis(ctx sdk.Context, data json.RawMessage) []abci.ValidatorUpdate {
 	var genesisState GenesisState
-	ModuleCdc.MustUnmarshalJSON(data, &genesisState)
+	types.ModuleCdc.MustUnmarshalJSON(data, &genesisState)
 	InitGenesis(ctx, am.keeper, genesisState)
 	return []abci.ValidatorUpdate{}
 }
@@ -126,7 +127,7 @@ func (am AppModule) InitGenesis(ctx sdk.Context, data json.RawMessage) []abci.Va
 // module.
 func (am AppModule) ExportGenesis(ctx sdk.Context) json.RawMessage {
 	gs := ExportGenesis(ctx, am.keeper)
-	return ModuleCdc.MustMarshalJSON(gs)
+	return types.ModuleCdc.MustMarshalJSON(gs)
 }
 
 // BeginBlock returns the begin blocker for the {{ .NameLowerCase }} module.
