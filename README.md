@@ -1,5 +1,7 @@
 # Cosmos Scaffold
 
+## This repo has been deprecated. Please see [starport](https://github.com/tendermint/starport/) for a cosmos scaffolding tool.
+
 Requirements:
 go: 1.13+
 
