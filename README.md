@@ -1,6 +1,8 @@
+> This repo was archived on Oct 15, 2020 but made available for historical records.
+# DEPRECATED. All activity moved to https://github.com/tendermint/starport.
+
 # Cosmos Scaffold
 
-## This repo has been deprecated. Please see [starport](https://github.com/tendermint/starport/) for a cosmos scaffolding tool.
 
 Requirements:
 go: 1.13+
