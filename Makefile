@@ -1,13 +1,15 @@
 # TODO: add versioning
 # TODO: add ldflags for version of sdk
 
+
+
 all: tools install
 
 mod:
 	@go mod tidy
 
 tools:
-	@go get -u github.com/go-bindata/go-bindata/...
+	bash install-bindata.sh
 
 generate: 
 	@go-bindata --pkg cmd -o cmd/bindata.go -prefix "templates/" templates/...
